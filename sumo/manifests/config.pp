@@ -1,6 +1,9 @@
 class sumo::config (
   $sumo_exec       = $sumo::params::sumo_exec,
   $sumo_short_arch = $sumo::params::sumo_short_arch,
+  $accessid        = $sumo::accessid,
+  $accesskey       = $sumo::accesskey,
+  
 ) inherits sumo::params {
 
   file {
@@ -13,7 +16,7 @@ class sumo::config (
       owner  => root,
       mode   => '0600',
       group  => root,
-      source => 'puppet:///modules/sumo/sumo.conf';
+      content => template('sumo/sumo.conf.erb');
     '/usr/local/sumo/sumo.json':
       ensure  => present,
       owner   => 'root',

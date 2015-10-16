@@ -9,7 +9,7 @@
             "useAutolineMatching": true,
             "forceTimeZone": false,
             "timeZone": "UTC",
-            "category": "OS/Linux/Security",
+            "category": "linux_auth_logs",
             "pathExpression": "/var/log/auth.log"
         },
         {
@@ -20,8 +20,30 @@
             "useAutolineMatching": true,
             "forceTimeZone": false,
             "timeZone": "UTC",
-            "category": "OS/Linux/System",
+            "category": "linux_package_logs",
             "pathExpression": "/var/log/apt/history.log"
+        },
+        {
+            "name": "linux_dpkg_logs",
+            "sourceType": "LocalFile",
+            "automaticDateParsing": true,
+            "multilineProcessingEnabled": false,
+            "useAutolineMatching": true,
+            "forceTimeZone": false,
+            "timeZone": "UTC",
+            "category": "linux_package_logs",
+            "pathExpression": "/var/log/dpkg.log"
+        },
+        {
+            "name": "linux_syslog_logs",
+            "sourceType": "LocalFile",
+            "automaticDateParsing": true,
+            "multilineProcessingEnabled": false,
+            "useAutolineMatching": true,
+            "forceTimeZone": false,
+            "timeZone": "UTC",
+            "category": "linux_service_logs",
+            "pathExpression": "/var/log/syslog.log"
         }
     ]
 }

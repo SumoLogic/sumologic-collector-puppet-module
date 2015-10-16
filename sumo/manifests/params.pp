@@ -14,6 +14,7 @@ class sumo::params {
       $sumo_short_arch = '32'
     }
     default: { fail("there is no supported arch ${::architecture}") }
+
   }
 }
 
