@@ -1,0 +1,27 @@
+{
+    "api.version": "v1",
+    "sources": [
+        {
+            "name": "linux_auth_logs",
+            "sourceType": "LocalFile",
+            "automaticDateParsing": true,
+            "multilineProcessingEnabled": false,
+            "useAutolineMatching": true,
+            "forceTimeZone": false,
+            "timeZone": "UTC",
+            "category": "OS/Linux/Security",
+            "pathExpression": "/var/log/auth.log"
+        },
+        {
+            "name": "linux_apt_logs",
+            "sourceType": "LocalFile",
+            "automaticDateParsing": true,
+            "multilineProcessingEnabled": false,
+            "useAutolineMatching": true,
+            "forceTimeZone": false,
+            "timeZone": "UTC",
+            "category": "OS/Linux/System",
+            "pathExpression": "/var/log/apt/history.log"
+        }
+    ]
+}

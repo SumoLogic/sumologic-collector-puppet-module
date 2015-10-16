@@ -3,45 +3,39 @@ class sumo::config (
   $sumo_short_arch = $sumo::params::sumo_short_arch,
 ) inherits sumo::params {
 
-
   file {
-    '/sumo':
+    '/usr/local/sumo':
       ensure => 'directory',
       owner  => 'root',
       group  => 'root';
     '/etc/sumo.conf':
       ensure => present,
       owner  => root,
-      mode   => '0755',
+      mode   => '0600',
       group  => root,
       source => 'puppet:///modules/sumo/sumo.conf';
-    '/opt/SumoCollector':
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root';
-    '/sumo/sumo.json':
+    '/usr/local/sumo/sumo.json':
       ensure  => present,
       owner   => 'root',
-      mode    => '0755',
+      mode    => '0600',
       group   => 'root',
       source  => 'puppet:///modules/sumo/sumo.json',
-      require => File['/sumo'];
+      require => File['/usr/local/sumo'];
   }
 
   exec { 'Download Sumo Executable':
-    command => "/usr/bin/curl -o /sumo/${sumo_exec} https://collectors.sumologic.com/rest/download/linux/${sumo_short_arch}",
+    command => "/usr/bin/curl -o /usr/local/sumo/${sumo_exec} https://collectors.sumologic.com/rest/download/linux/${sumo_short_arch}",
     cwd     => '/usr/bin',
     path    => [ '/usr/bin', '/usr/local/bin' ],
-    creates => "/sumo/${sumo_exec}",
-    require => File['/sumo'],
+    creates => "/usr/local/sumo/${sumo_exec}",
+    require => File['/usr/local/sumo'],
   }
-  exec {'Execute sumo':
-    command => "/sumo/${sumo_exec} -q",
+
+  exec { 'Execute sumo':
+    command => "/bin/sh /usr/local/sumo/${sumo_exec} -q",
+    cwd     => '/usr/local/sumo',
     creates => '/opt/SumoCollector',
-    path    => ['/usr/bin/', '/sumo', '/usr/local/bin' ],
+    path    => ['/usr/local/sumo', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin'],
     require => Exec['Download Sumo Executable'],
   }
-
 }
-
-
