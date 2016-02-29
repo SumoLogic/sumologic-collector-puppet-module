@@ -1,6 +1,8 @@
 class sumo::config (
   $sumo_exec       = $sumo::params::sumo_exec,
   $sumo_short_arch = $sumo::params::sumo_short_arch,
+  $sumo_conf_source_path = $sumo::params::sumo_conf_source_path,
+  $sumo_json_source_path = $sumo::params::sumo_json_source_path
 ) inherits sumo::params {
 
   file {
@@ -13,13 +15,13 @@ class sumo::config (
       owner  => root,
       mode   => '0600',
       group  => root,
-      source => 'puppet:///modules/sumo/sumo.conf';
+      source => $sumo_conf_source_path;
     '/usr/local/sumo/sumo.json':
       ensure  => present,
       owner   => 'root',
       mode    => '0600',
       group   => 'root',
-      source  => 'puppet:///modules/sumo/sumo.json',
+      source  => $sumo_json_source_path,
       require => File['/usr/local/sumo'];
   }
 
