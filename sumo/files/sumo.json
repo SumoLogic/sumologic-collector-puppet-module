@@ -22,6 +22,28 @@
             "timeZone": "UTC",
             "category": "OS/Linux/System",
             "pathExpression": "/var/log/apt/history.log"
+        },
+        {
+            "name": "linux_dpkg_logs",
+            "sourceType": "LocalFile",
+            "automaticDateParsing": true,
+            "multilineProcessingEnabled": false,
+            "useAutolineMatching": true,
+            "forceTimeZone": false,
+            "timeZone": "UTC",
+            "category": "OS/Linux/System",
+            "pathExpression": "/var/log/dpkg.log"
+        },
+        {
+            "name": "linux_syslog_logs",
+            "sourceType": "LocalFile",
+            "automaticDateParsing": true,
+            "multilineProcessingEnabled": false,
+            "useAutolineMatching": true,
+            "forceTimeZone": false,
+            "timeZone": "UTC",
+            "category": "OS/Linux/System",
+            "pathExpression": "/var/log/syslog.log"
         }
     ]
 }
