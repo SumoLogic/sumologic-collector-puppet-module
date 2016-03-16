@@ -1,10 +1,11 @@
-class sumo::config (
+class sumo::nix_config (
   $sumo_exec       = $sumo::params::sumo_exec,
   $sumo_short_arch = $sumo::params::sumo_short_arch,
   $accessid        = $sumo::accessid,
   $accesskey       = $sumo::accesskey,
   $sumo_conf_source_path = $sumo::params::sumo_conf_source_path,
-  $sumo_json_source_path = $sumo::params::sumo_json_source_path
+  $sumo_json_source_path = $sumo::params::sumo_json_source_path,
+  $sources_disk_path = '/usr/local/sumo/sumo.json'
 ) inherits sumo::params {
   file {
     '/usr/local/sumo':
