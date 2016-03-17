@@ -7,9 +7,16 @@ class sumo (
   $sumo_json_source_path = $sumo::params::sumo_json_source_path
 ) inherits sumo::params {
   if $osfamily == 'windows'{
-    include sumo::win_config
+      class { 'sumo::win_config':
+  	    sumo_conf_source_path => $sumo_conf_source_path,
+  	    sumo_json_source_path => $sumo_json_source_path
+  	}
   }else{
-    include sumo::nix_config
+    class { 'sumo::nix_config':
+      sumo_conf_source_path => $sumo_conf_source_path,
+      sumo_json_source_path => $sumo_json_source_path
+    }
+
   }
 
 }
