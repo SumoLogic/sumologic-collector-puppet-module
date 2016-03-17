@@ -20,7 +20,7 @@ class sumo::nix_config (
       source  => $sumo_json_source_path,
       require => File['/usr/local/sumo'];
   }
-  if ($accessid) and ($accesskey) {
+  if ($accessid != nil) and ($accesskey != nil) {
       file {
           '/etc/sumo.conf':
             ensure => present,

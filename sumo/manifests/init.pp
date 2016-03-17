@@ -9,12 +9,16 @@ class sumo (
   if $osfamily == 'windows'{
       class { 'sumo::win_config':
   	    sumo_conf_source_path => $sumo_conf_source_path,
-  	    sumo_json_source_path => $sumo_json_source_path
+  	    sumo_json_source_path => $sumo_json_source_path,
+        accessid => $accessid,
+        accessKey => $accesskey
   	}
   }else{
     class { 'sumo::nix_config':
       sumo_conf_source_path => $sumo_conf_source_path,
-      sumo_json_source_path => $sumo_json_source_path
+      sumo_json_source_path => $sumo_json_source_path,
+      accessid => $accessid,
+      accessKey => $accesskey
     }
 
   }
