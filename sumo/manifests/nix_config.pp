@@ -12,12 +12,6 @@ class sumo::nix_config (
       ensure => 'directory',
       owner  => 'root',
       group  => 'root';
-    '/etc/sumo.conf':
-      ensure => present,
-      owner  => root,
-      mode   => '0600',
-      group  => root,
-      source => $sumo_conf_source_path;
     '/usr/local/sumo/sumo.json':
       ensure  => present,
       owner   => 'root',
@@ -26,6 +20,27 @@ class sumo::nix_config (
       source  => $sumo_json_source_path,
       require => File['/usr/local/sumo'];
   }
+  if ($accessid != nil) and ($accesskey != nil) {
+      file {
+          '/etc/sumo.conf':
+            ensure => present,
+            owner  => root,
+            mode   => '0600',
+            group  => root,
+            content => template('sumo/sumo.conf.erb');
+        }
+  }
+  else{
+      file {
+          '/etc/sumo.conf':
+            ensure => present,
+            owner  => root,
+            mode   => '0600',
+            group  => root,
+            source => $sumo_conf_source_path;
+        }
+  }
+
 
   exec { 'Download Sumo Executable':
     command => "/usr/bin/curl -o /usr/local/sumo/${sumo_exec} https://collectors.sumologic.com/rest/download/linux/${sumo_short_arch}",
