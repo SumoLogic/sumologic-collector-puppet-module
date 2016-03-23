@@ -1,3 +1,4 @@
+# Class for sumologic nix config
 class sumo::nix_config (
   $sumo_exec       = $sumo::params::sumo_exec,
   $sumo_short_arch = $sumo::params::sumo_short_arch,
