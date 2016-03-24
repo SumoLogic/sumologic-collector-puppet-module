@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of sumologic-collector.
 
+## 0.1.3:
+Merged PR13: Unnest module so it will work with Librarian Puppet 
+
 ## 0.1.2:
 Merged PR 12. 
 
