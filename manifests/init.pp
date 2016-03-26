@@ -12,14 +12,14 @@ class sumo (
       sumo_conf_source_path => $sumo_conf_source_path,
       sumo_json_source_path => $sumo_json_source_path,
       accessid              => $accessid,
-      accessKey             => $accesskey
+      accesskey             => $accesskey
     }
   } else {
     class { 'sumo::nix_config':
       sumo_conf_source_path => $sumo_conf_source_path,
       sumo_json_source_path => $sumo_json_source_path,
       accessid              => $accessid,
-      accessKey             => $accesskey
+      accesskey             => $accesskey
     }
 
   }
