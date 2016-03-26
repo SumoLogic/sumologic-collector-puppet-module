@@ -1,0 +1,12 @@
+{
+  "name": "sumo",
+  "version": "0.1.4",
+  "author": "SumoLogic",
+  "summary": "Provides SumoLogic collector installation and configuration",
+  "license": "Apache-2.0",
+  "source": "https://github.com/SumoLogic/sumo-collector-puppet-module",
+  "project_page": "https://github.com/SumoLogic/sumo-collector-puppet-module",
+  "issues_url": "https://github.com/SumoLogic/sumo-collector-puppet-module/issues",
+  "dependencies": [],
+  "requirements": []
+}
