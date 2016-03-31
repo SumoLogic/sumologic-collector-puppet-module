@@ -40,7 +40,7 @@ class sumo::win_config (
         group   => 'Administrators',
         content => template('sumo/sumo.conf.erb'),
         before  => Package['sumologic'],
-		require => File['C:\sumo'];
+        require => File['C:\sumo'];
       }
     }
     else {
@@ -50,7 +50,7 @@ class sumo::win_config (
         group  => 'Administrators',
         source => $sumo_conf_source_path,
         before  => Package['sumologic'],
-		require => File['C:\sumo'];
+        require => File['C:\sumo'];
       }
     }
     package { 'sumologic':
