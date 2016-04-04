@@ -1,4 +1,51 @@
+# This file is managed by Puppet
+
+<% if @accessid && @accesskey %>
 accessid=<%= @accessid %>
 accesskey=<%= @accesskey %>
-ephemeral=true
-sources=<%= @sources_disk_path %>
+<% end %>
+
+<% if @email && @password %>
+email=<%= @email %>
+password=<%= @password %>
+<% end %>
+
+<% if @collector_name %>
+name=<%= @collector_name %>
+<% end %>
+
+<% if @sources %>
+sources=<%= @sources %>
+<% end %>
+
+<% if @ephemeral %>
+ephemeral=<%= @ephemeral %>
+<% end %>
+
+<% if @clobber %>
+clobber=<%= @clobber %>
+<% end %>
+
+<% if @proxy_host %>
+proxyHost=<%= @proxy_host %>
+<% end %>
+
+<% if @proxy_port %>
+proxyPort=<%= @proxy_port %>
+<% end %>
+
+<% if @proxy_user %>
+proxyUser=<%= @proxy_user %>
+<% end %>
+
+<% if @proxy_password %>
+proxyPassword=<%= @proxy_password %>
+<% end %>
+
+<% if @proxy_ntlmdomain %>
+proxyNtlmdomain=<%= @proxy_ntlmdomain %>
+<% end %>
+
+<% if @syncsources %>
+syncSources=<%= @syncsources %>
+<% end %>

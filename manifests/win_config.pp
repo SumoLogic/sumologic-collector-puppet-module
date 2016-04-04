@@ -1,13 +1,31 @@
 # class for sumologic windows config
 class sumo::win_config (
-  $sumo_exec             = $sumo::params::sumo_exec,
-  $sumo_short_arch       = $sumo::params::sumo_short_arch,
-  $accessid              = $sumo::accessid,
-  $accesskey             = $sumo::accesskey,
-  $sumo_conf_source_path = $sumo::params::sumo_conf_source_path,
-  $sumo_json_source_path = $sumo::params::sumo_json_source_path,
-  $sources_disk_path     = 'C:\sumo\sumo.json'
-) inherits sumo::params {
+  $accessid               = $sumo::accessid,
+  $accesskey              = $sumo::accesskey,
+  $clobber                = $sumo::clobber,
+  $collector_name         = $sumo::collector_name,
+  $email                  = $sumo::email,
+  $ephemeral              = $sumo::ephemeral,
+  $manage_config_file     = $sumo::manage_config_file,
+  $manage_sources         = $sumo::manage_sources,
+  $password               = $sumo::password,
+  $proxy_host             = $sumo::proxy_host,
+  $proxy_ntlmdomain       = $sumo::proxy_ntlmdomain,
+  $proxy_password         = $sumo::proxy_password,
+  $proxy_port             = $sumo::proxy_port,
+  $proxy_user             = $sumo::proxy_user,
+  $sources                = $sumo::sources,
+  $sumo_conf_source_path  = $sumo::sumo_conf_source_path,
+  $sumo_exec              = $sumo::sumo_exec,
+  $sumo_short_arch        = $sumo::sumo_short_arch,
+  $syncsources            = $sumo::syncsources,
+) {
+  unless ($accessid != undef and $accesskey != undef) or ($email != undef and $password != undef) {
+    fail(
+      'You must provide either an accesskey and accessid, or an email and password for the SumoLogic collector to connect with.'
+    )
+  }
+
   file {
     'C:\sumo\download_sumo.ps1':
       ensure  => present,
@@ -15,48 +33,46 @@ class sumo::win_config (
       group   => 'Administrators',
       source  => 'puppet:///modules/sumo/download_sumo.ps1',
       require => File['C:\sumo'];
+
     'C:\sumo':
       ensure => directory,
       mode   =>  '0777',
       group  => 'Administrators';
-    'C:\sumo\sumo.json':
+  }
+
+  if $manage_sources {
+    file { 'C:\sumo\sumo.json':
       ensure  => present,
       mode    => '0644',
       group   => 'Administrators',
       source  => $sumo_json_source_path,
-      require => File['C:\sumo'];
+      require => File['C:\sumo'],
+    }
   }
+
+  if $manage_config_file {
+    file { 'C:\sumo\sumo.conf':
+      ensure  => present,
+      mode    => '0644',
+      group   => 'Administrators',
+      content => template('sumo/sumo.conf.erb'),
+      require => File['C:\sumo'];
+    }
+  }
+
   exec { 'download_sumo':
     command => 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -executionpolicy remotesigned -file C:\\sumo\\download_sumo.ps1',
     require => File['C:\sumo\download_sumo.ps1'],
     creates => 'C:\sumo\sumo.exe'
-    # path => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
-    # refreshonly => true,
-    }
-    if ($accessid != nil) and ($accesskey != nil){
-      file { 'C:\sumo\sumo.conf':
-        ensure  => present,
-        mode    => '0644',
-        group   => 'Administrators',
-        content => template('sumo/sumo.conf.erb'),
-        before  => Package['sumologic'],
-        require => File['C:\sumo'];
-      }
-    }
-    else {
-      file { 'c:/sumo/sumo.conf':
-        ensure => present,
-        mode   => '0644',
-        group  => 'Administrators',
-        source => $sumo_conf_source_path,
-        before  => Package['sumologic'],
-        require => File['C:\sumo'];
-      }
-    }
-    package { 'sumologic':
-      ensure          => installed,
-      install_options => ['-q'],
-      source          => 'C:\sumo\sumo.exe',
-      require         => Exec['download_sumo']
-    }
+  }
+
+  package { 'sumologic':
+    ensure          => installed,
+    install_options => ['-q'],
+    source          => 'C:\sumo\sumo.exe',
+    require         => [
+      Exec['download_sumo'],
+      File['C:\sumo\sumo.conf'],
+    ]
+  }
 }
