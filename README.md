@@ -15,12 +15,11 @@ class { 'sumo':
 
 ## Parameters
 This module supports almost all of the configuration options listed in
-SumoLogic's documentation,
-http://help.sumologic.com/Send_Data/Installed_Collectors/sumo.conf.  Head there
+SumoLogic's [documentation](http://help.sumologic.com/Send_Data/Installed_Collectors/sumo.conf).  Head there
 for a full explanation of what each option does to the SumoLogic collector.
 
 The only required parameters are a pair of authentication parameters: either
-accessid and accesskey, or email and password.
+`accessid` and `accesskey`, or `email` and `password`.
 
 | Parameter Name        | Description                                            | Default value (in the module, not the collector)
 |-----------------------|--------------------------------------------------------|-------------------------------------------------
@@ -44,3 +43,6 @@ accessid and accesskey, or email and password.
 | sumo_exec             | The installation executable name                       | architecture specific
 | sumo_short_arch       | The shortened architecture to download                 | architecture specific
 | syncsources           | For Local File Configuration, the sources file to sync | $sources
+
+## Testing / Contributing
+See [CONTRIBUTING.md](https://github.com/SumoLogic/sumo-collector-puppet-module/blob/master/CONTRIBUTING.md).

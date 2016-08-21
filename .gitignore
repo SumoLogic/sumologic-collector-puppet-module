@@ -1,1 +1,10 @@
+.*.sw?
+.bundle
+.DS_Store
+.rspec_system
+.vagrant
+junit
+log
+pkg
 spec/fixtures
+vendor

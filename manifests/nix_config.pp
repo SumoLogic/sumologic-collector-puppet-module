@@ -38,7 +38,7 @@ class sumo::nix_config (
       owner   => 'root',
       mode    => '0600',
       group   => 'root',
-      source  => $::sumo::params::sumo_json_source_path,
+      source  => $sumo::sumo_json_source_path,
       require => File['/usr/local/sumo']
     }
   }
