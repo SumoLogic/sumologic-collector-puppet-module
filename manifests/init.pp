@@ -21,7 +21,7 @@ class sumo (
   $sumo_short_arch       = $sumo::params::sumo_short_arch,
   $syncsources           = $sumo::params::syncsources,
 ) inherits sumo::params {
-  if $osfamily == 'windows'{
+  if $::osfamily == 'windows'{
     class { 'sumo::win_config': }
   } else {
     class { 'sumo::nix_config': }

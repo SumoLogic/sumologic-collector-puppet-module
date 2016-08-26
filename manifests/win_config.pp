@@ -45,7 +45,7 @@ class sumo::win_config (
       ensure  => present,
       mode    => '0644',
       group   => 'Administrators',
-      source  => $sumo_json_source_path,
+      source  => $sumo::sumo_json_source_path,
       require => File['C:\sumo'],
     }
   }
@@ -60,8 +60,9 @@ class sumo::win_config (
     }
   }
 
+  $powershell_path = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'
   exec { 'download_sumo':
-    command => 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -executionpolicy remotesigned -file C:\\sumo\\download_sumo.ps1',
+    command => "${powershell_path} -executionpolicy remotesigned -file C:\\sumo\\download_sumo.ps1",
     require => File['C:\sumo\download_sumo.ps1'],
     creates => 'C:\sumo\sumo.exe'
   }
