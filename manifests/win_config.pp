@@ -45,6 +45,7 @@ class sumo::win_config (
       ensure  => present,
       mode    => '0644',
       group   => 'Administrators',
+      content => $sumo::sumo_json_content,
       source  => $sumo::sumo_json_source_path,
       require => File['C:\sumo'],
     }

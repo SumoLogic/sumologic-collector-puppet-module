@@ -21,6 +21,8 @@ for a full explanation of what each option does to the SumoLogic collector.
 The only required parameters are a pair of authentication parameters: either
 `accessid` and `accesskey`, or `email` and `password`.
 
+If `manage_sources` is True, either `sumo_json_content` or `sumo_json_source_path` should be defined (but not both).
+
 | Parameter Name        | Description                                            | Default value (in the module, not the collector)
 |-----------------------|--------------------------------------------------------|-------------------------------------------------
 | accessid              | The access id for the collector to register with       | undef
@@ -39,6 +41,7 @@ The only required parameters are a pair of authentication parameters: either
 | proxy_user            | When using a proxy, the user to connect as             | undef
 | sources               | The destination (on disk) of your sources file         | platform specific
 | sumo_conf_source_path | The Puppet URL for your sumo.conf file                 | platform specific
+| sumo_json_content     | The text content for your sumo.json file                 | undef
 | sumo_json_source_path | The Puppet URL for your sumo.json file                 | puppet:///modules/sumo/sumo.json
 | sumo_exec             | The installation executable name                       | architecture specific
 | sumo_short_arch       | The shortened architecture to download                 | architecture specific
