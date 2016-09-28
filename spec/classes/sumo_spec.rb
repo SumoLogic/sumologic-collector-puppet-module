@@ -38,6 +38,7 @@ RSpec.describe 'sumo' do
         accesskey: 'accesskey',
         manage_sources: true,
         sumo_json_content: 'test',
+        sumo_json_source_path: false,
       }
     }
     it { is_expected.to contain_file('/usr/local/sumo/sumo.json').with_content('test') }
@@ -63,6 +64,7 @@ RSpec.describe 'sumo' do
         accesskey: 'accesskey',
         manage_sources: true,
         sumo_json_content: 'test',
+        sumo_json_source_path: false,
       }
     }
     it { is_expected.to contain_file('C:\sumo\sumo.json').with_content('test') }
