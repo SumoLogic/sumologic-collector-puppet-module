@@ -13,12 +13,12 @@ RSpec.describe 'sumo::nix_config' do
     it { is_expected.not_to contain_file('/etc/sumo.conf') }
   end
 
-  context 'with only email and password' do
-    let(:params) { { email: 'email', password: 'password' } }
+  context 'with only accessid and accesskey' do
+    let(:params) { { accessid: 'accessid', accesskey: 'accesskey' } }
     it { is_expected.to compile }
   end
 
-  context 'with no accessid/accesskey or email/password' do
+  context 'with no accessid/accesskey' do
     let(:params) { { } }
     it { is_expected.to compile.and_raise_error(/You must provide/) }
   end

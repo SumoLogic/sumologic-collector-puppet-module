@@ -4,11 +4,9 @@ class sumo::win_config (
   $accesskey              = $sumo::accesskey,
   $clobber                = $sumo::clobber,
   $collector_name         = $sumo::collector_name,
-  $email                  = $sumo::email,
   $ephemeral              = $sumo::ephemeral,
   $manage_config_file     = $sumo::manage_config_file,
   $manage_sources         = $sumo::manage_sources,
-  $password               = $sumo::password,
   $proxy_host             = $sumo::proxy_host,
   $proxy_ntlmdomain       = $sumo::proxy_ntlmdomain,
   $proxy_password         = $sumo::proxy_password,
@@ -20,9 +18,9 @@ class sumo::win_config (
   $sumo_short_arch        = $sumo::sumo_short_arch,
   $syncsources            = $sumo::syncsources,
 ) {
-  unless ($accessid != undef and $accesskey != undef) or ($email != undef and $password != undef) {
+  unless ($accessid != undef and $accesskey != undef) {
     fail(
-      'You must provide either an accesskey and accessid, or an email and password for the SumoLogic collector to connect with.'
+      'You must provide either an accesskey and accessid for the SumoLogic collector to connect with.'
     )
   }
 
