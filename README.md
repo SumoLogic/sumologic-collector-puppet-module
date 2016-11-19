@@ -18,8 +18,7 @@ This module supports almost all of the configuration options listed in
 SumoLogic's [documentation](http://help.sumologic.com/Send_Data/Installed_Collectors/sumo.conf).  Head there
 for a full explanation of what each option does to the SumoLogic collector.
 
-The only required parameters are a pair of authentication parameters: either
-`accessid` and `accesskey`, or `email` and `password`.
+The only required parameters are a pair of authentication parameters: `accessid` and `accesskey`.
 
 | Parameter Name        | Description                                            | Default value (in the module, not the collector)
 |-----------------------|--------------------------------------------------------|-------------------------------------------------
@@ -27,8 +26,6 @@ The only required parameters are a pair of authentication parameters: either
 | accesskey             | The access key for the collector to register with      | undef
 | clobber               | Whether you want to clobber the collector              | false
 | collector_name        | Name of the collector                                  | undef
-| email                 | The email for the collector to register with           | undef
-| password              | The password for the collector to register with        | undef
 | ephemeral             | Whether to mark the collector as ephemeral             | false
 | manage_config_file    | If you want this module to manage your sumo.conf file  | true
 | manage_sources        | If you want this module to manage your sources file    | false
