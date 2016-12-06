@@ -5,8 +5,8 @@ describe 'sumo class: management of sources/config' do
   it 'should work idempotently with no errors' do
     pp = <<-EOS
     class { 'sumo':
-      accessid           => 'sue4YBD9gAlqew',
-      accesskey          => 'YIwGHyE6O9bTkdGMLenuVMZ9Ifbbl55GxsjZxHXSr1ZeHDeGqSXZqAd82yrq8M0p',
+      accessid           => 'XXXX: must be filled in to work',
+      accesskey          => 'YYYY: must be filled in to work',
       manage_config_file => true,
       manage_sources     => true,
     }
