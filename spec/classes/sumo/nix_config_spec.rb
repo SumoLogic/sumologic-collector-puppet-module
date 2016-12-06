@@ -36,7 +36,7 @@ RSpec.describe 'sumo::nix_config' do
 
   it { is_expected.to contain_file('/usr/local/sumo') }
   it { is_expected.to contain_file('/usr/local/sumo/sumo.json') }
-  it { is_expected.to contain_file('/etc/sumo.conf') }
+  it { is_expected.to contain_file('/etc/sumo.conf').with_content(/accessid/) }
 
   it { is_expected.to contain_exec('Download Sumo Executable') }
   it { is_expected.to contain_exec('Execute sumo') }
