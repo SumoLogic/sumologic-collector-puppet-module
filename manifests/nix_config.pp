@@ -14,6 +14,7 @@ class sumo::nix_config (
   $proxy_user             = $sumo::proxy_user,
   $sources                = $sumo::sources,
   $sumo_conf_source_path  = $sumo::sumo_conf_source_path,
+  $sumo_conf_template_path  = $sumo::sumo_conf_template_path,
   $sumo_exec              = $sumo::sumo_exec,
   $sumo_short_arch        = $sumo::sumo_short_arch,
   $syncsources            = $sumo::syncsources,
@@ -47,7 +48,7 @@ class sumo::nix_config (
       owner   => 'root',
       group   => 'root',
       mode    => '0600',
-      content => template($sumo::sumo_conf_template_path),
+      content => template($sumo_conf_template_path),
     }
   }
 
