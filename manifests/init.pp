@@ -18,6 +18,10 @@ class sumo (
   $sumo_exec             = $sumo::params::sumo_exec,
   $sumo_short_arch       = $sumo::params::sumo_short_arch,
   $syncsources           = $sumo::params::syncsources,
+  $use_package           = false,
+  $sumo_package_suffix   = $sumo::params::sumo_package_suffix,
+  $sumo_package_provider = $sumo::params::sumo_package_provider,
+  $sumo_package_filename = $sumo::params::sumo_package_filename,
 ) inherits sumo::params {
   if $::osfamily == 'windows'{
     class { 'sumo::win_config': }
