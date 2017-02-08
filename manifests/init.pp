@@ -14,6 +14,7 @@ class sumo (
   $proxy_user            = undef,
   $sources               = $sumo::params::sources,
   $sumo_conf_source_path = $sumo::params::sumo_conf_source_path,
+  $sumo_conf_template_path = $sumo::params::sumo_conf_template_path,
   $sumo_json_source_path = $sumo::params::sumo_json_source_path,
   $sumo_exec             = $sumo::params::sumo_exec,
   $sumo_short_arch       = $sumo::params::sumo_short_arch,

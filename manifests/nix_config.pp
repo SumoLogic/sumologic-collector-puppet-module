@@ -31,7 +31,7 @@ class sumo::nix_config (
   }
 
   if $manage_sources {
-    file { '/usr/local/sumo/sumo.json':
+    file { $sources:
       ensure  => present,
       owner   => 'root',
       mode    => '0600',
@@ -47,7 +47,7 @@ class sumo::nix_config (
       owner   => 'root',
       group   => 'root',
       mode    => '0600',
-      content => template('sumo/sumo.conf.erb')
+      content => template($sumo::sumo_conf_template_path),
     }
   }
 
