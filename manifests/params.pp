@@ -17,6 +17,22 @@ class sumo::params {
       }
       default: { fail("there is no supported arch ${::architecture}") }
     }
+
+    case $::osfamily {
+      'Debian': {
+        $sumo_package_suffix   = "deb/${sumo_short_arch}"
+        $sumo_package_filename = 'sumocollector.deb'
+        $sumo_package_provider = 'dpkg'
+      }
+      'Redhat': {
+        $sumo_package_suffix   = "rpm/${sumo_short_arch}"
+        $sumo_package_filename = 'sumocollector.rpm'
+        $sumo_package_provider = 'rpm'
+      }
+      default: {
+        $sumo_package_provider = ''
+      }
+    }
   }
 
   $sumo_conf_template_path = 'sumo/sumo.conf.erb'

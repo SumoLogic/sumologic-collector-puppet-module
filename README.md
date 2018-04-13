@@ -38,8 +38,12 @@ The only required parameters are a pair of authentication parameters: `accessid`
 | sumo_conf_source_path | The Puppet URL for your sumo.conf file                 | platform specific
 | sumo_json_source_path | The Puppet URL for your sumo.json file                 | puppet:///modules/sumo/sumo.json
 | sumo_exec             | The installation executable name                       | architecture specific
+| sumo_package_filename | Name to store the downloaded sumo package in           | architecture specific (if use_package == true)
+| sumo_package_suffix   | The final string on the download URL                   | architecture specific (if use_package == true)
+| sumo_package_provider | Puppet package provider to install the package         | architecture specific (if use_package == true)
 | sumo_short_arch       | The shortened architecture to download                 | architecture specific
 | syncsources           | For Local File Configuration, the sources file to sync | $sources
+| use_package           | Install a binary package, not from script              | false
 
 ## Testing / Contributing
 See [CONTRIBUTING.md](https://github.com/SumoLogic/sumo-collector-puppet-module/blob/master/CONTRIBUTING.md).

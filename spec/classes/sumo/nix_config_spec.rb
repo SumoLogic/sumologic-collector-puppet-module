@@ -31,7 +31,8 @@ RSpec.describe 'sumo::nix_config' do
     it { is_expected.to compile.and_raise_error(/You must provide/) }
   end
 
-  let(:params) do
+  context 'with manage_sources = true, manage_config_file = true' do
+    let(:params) do
     {
       manage_sources: true,
       manage_config_file: true,
@@ -40,16 +41,29 @@ RSpec.describe 'sumo::nix_config' do
       sumo_conf_template_path: 'sumo/sumo.conf.erb',
       sources: '/usr/local/sumo/sumo.json',
     }
+    end
+
+    it { is_expected.to compile }
+    it { is_expected.to contain_file('/usr/local/sumo') }
+    it { is_expected.to contain_file('/usr/local/sumo/sumo.json') }
+    it { is_expected.to contain_file('/etc/sumo.conf') }
+    it { is_expected.to contain_exec('Download Sumo Executable') }
+    it { is_expected.to contain_exec('Execute sumo') }
   end
 
-  it { is_expected.to compile }
-
-  it { is_expected.to contain_file('/usr/local/sumo') }
-  it { is_expected.to contain_file('/usr/local/sumo/sumo.json') }
-  it { is_expected.to contain_file('/etc/sumo.conf') }
-
-  it { is_expected.to contain_exec('Download Sumo Executable') }
-  it { is_expected.to contain_exec('Execute sumo') }
+  context 'with use_package = true' do
+    let(:params) do
+      {
+        accessid: 'accessid',
+        accesskey: 'accesskey',
+        use_package: true,
+      }
+    end
+    it { is_expected.to contain_file('/usr/local/sumo') }
+    it { is_expected.to contain_exec('Download SumoCollector Package') }
+    it { is_expected.to contain_package('sumocollector') }
+    it { is_expected.to contain_service('sumocollector') }
+  end
 
   context 'with alternate sources location' do
     let(:params) do
