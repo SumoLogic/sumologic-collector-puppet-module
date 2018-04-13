@@ -14,7 +14,15 @@ RSpec.describe 'sumo::nix_config' do
   end
 
   context 'with only accessid and accesskey' do
-    let(:params) { { accessid: 'accessid', accesskey: 'accesskey' } }
+    #let(:params) { { accessid: 'accessid', accesskey: 'accesskey' } }
+    let(:params) do
+      {
+        accessid: 'accessid',
+        accesskey: 'accesskey',
+        sumo_conf_template_path: 'sumo/sumo.conf.erb',
+        sources: '/usr/local/sumo/sumo.json',
+      }
+    end
     it { is_expected.to compile }
   end
 
@@ -29,6 +37,8 @@ RSpec.describe 'sumo::nix_config' do
       manage_config_file: true,
       accessid: 'accessid',
       accesskey: 'accesskey',
+      sumo_conf_template_path: 'sumo/sumo.conf.erb',
+      sources: '/usr/local/sumo/sumo.json',
     }
   end
 
@@ -40,4 +50,20 @@ RSpec.describe 'sumo::nix_config' do
 
   it { is_expected.to contain_exec('Download Sumo Executable') }
   it { is_expected.to contain_exec('Execute sumo') }
+
+  context 'with alternate sources location' do
+    let(:params) do
+      { 
+        manage_sources: true,
+        manage_config_file: true,
+        accessid: 'accessid',
+        accesskey: 'accesskey',
+        sumo_conf_template_path: 'sumo/sumo.conf.erb',
+        sources: '/etc/sumo.json',
+      } 
+    end
+    it { is_expected.to compile }
+    it { is_expected.to contain_file('/etc/sumo.conf') }
+    it { is_expected.to contain_file('/etc/sumo.json') }
+  end
 end
