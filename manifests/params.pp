@@ -35,6 +35,7 @@ class sumo::params {
     }
   }
 
+  $sumo_conf_template_path = 'sumo/sumo.conf.erb'
   $sumo_json_source_path = 'puppet:///modules/sumo/sumo.json'
   $syncsources           = $sources
 }
