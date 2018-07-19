@@ -2,31 +2,37 @@
 class sumo (
   $accessid              = undef,
   $accesskey             = undef,
-  $clobber               = false,
+  $category              = undef,
+  $clobber               = 'false',
   $collector_name        = undef,
-  $ephemeral             = false,
-  $manage_config_file    = true,
-  $manage_sources        = false,
+  $collector_secureFiles = undef,
+  $collector_url         = undef,
+  $description           = undef,
+  $disableActionSource   = undef,
+  $disableScriptSource   = undef,
+  $disableUpgrade        = undef,
+  $ephemeral             = 'false',
+  $hostName              = $::hostname,
+  $local_exec_file       = undef,
+  Boolean $manage_download       = true,
+  Boolean $manage_sources        = false,
   $proxy_host            = undef,
   $proxy_ntlmdomain      = undef,
   $proxy_password        = undef,
   $proxy_port            = undef,
   $proxy_user            = undef,
+  $skipRegistration      = undef,
   $sources               = $sumo::params::sources,
-  $sumo_conf_source_path = $sumo::params::sumo_conf_source_path,
-  $sumo_conf_template_path = $sumo::params::sumo_conf_template_path,
   $sumo_json_source_path = $sumo::params::sumo_json_source_path,
+  $sumo_json_sync_source = undef,
   $sumo_exec             = $sumo::params::sumo_exec,
   $sumo_short_arch       = $sumo::params::sumo_short_arch,
-  $syncsources           = $sumo::params::syncsources,
-  $use_package           = false,
-  $sumo_package_suffix   = $sumo::params::sumo_package_suffix,
-  $sumo_package_provider = $sumo::params::sumo_package_provider,
-  $sumo_package_filename = $sumo::params::sumo_package_filename,
+  $sumo_win_arch         = $sumo::params::sumo_win_arch,
+  $syncSources           = $sumo::params::syncSources,
+  $targetCPU             = undef,
+  $token                 = undef,
+  $timeZone              = undef,
 ) inherits sumo::params {
-  if $::osfamily == 'windows'{
-    class { 'sumo::win_config': }
-  } else {
-    class { 'sumo::nix_config': }
-  }
+  validate_bool($manage_download)
+  validate_bool($manage_sources)
 }

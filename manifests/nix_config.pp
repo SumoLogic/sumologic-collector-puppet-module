@@ -1,32 +1,42 @@
-# Class for sumologic nix config
 class sumo::nix_config (
-  $accessid               = $sumo::accessid,
-  $accesskey              = $sumo::accesskey,
-  $clobber                = $sumo::clobber,
-  $collector_name         = $sumo::collector_name,
-  $ephemeral              = $sumo::ephemeral,
-  $manage_config_file     = $sumo::manage_config_file,
-  $manage_sources         = $sumo::manage_sources,
-  $proxy_host             = $sumo::proxy_host,
-  $proxy_ntlmdomain       = $sumo::proxy_ntlmdomain,
-  $proxy_password         = $sumo::proxy_password,
-  $proxy_port             = $sumo::proxy_port,
-  $proxy_user             = $sumo::proxy_user,
-  $sources                = $sumo::sources,
-  $sumo_conf_source_path  = $sumo::sumo_conf_source_path,
-  $sumo_conf_template_path  = $sumo::sumo_conf_template_path,
-  $sumo_exec              = $sumo::sumo_exec,
-  $sumo_short_arch        = $sumo::sumo_short_arch,
-  $syncsources            = $sumo::syncsources,
-  $use_package            = $sumo::use_package,
-  $sumo_package_suffix    = $sumo::sumo_package_suffix,
-  $sumo_package_provider  = $sumo::sumo_package_provider,
-  $sumo_package_filename  = $sumo::sumo_package_filename,
+  $runAs_username         = undef,
 ) {
-  unless ($accessid != undef and $accesskey != undef) {
-    fail(
-      'You must provide either an accesskey and accessid for the SumoLogic collector to connect with.'
-    )
+  ########## Parameters Section ##########
+  $accessid               = $sumo::accessid
+  $accesskey              = $sumo::accesskey
+  $category               = $sumo::category
+  $clobber                = $sumo::clobber
+  $collector_name         = $sumo::collector_name
+  $collector_secureFiles  = $sumo::collector_secureFiles
+  $collector_url          = $sumo::collector_url
+  $description            = $sumo::description
+  $disableActionSource    = $sumo::disableActionSource
+  $disableScriptSource    = $sumo::disableScriptSource
+  $disableUpgrade         = $sumo::disableUpgrade
+  $ephemeral              = $sumo::ephemeral
+  $hostName               = $sumo::hostName
+  $local_exec_file        = $sumo::local_exec_file
+  $manage_download        = $sumo::manage_download
+  $manage_sources         = $sumo::manage_sources
+  $proxy_host             = $sumo::proxy_host
+  $proxy_ntlmdomain       = $sumo::proxy_ntlmdomain
+  $proxy_password         = $sumo::proxy_password
+  $proxy_port             = $sumo::proxy_port
+  $proxy_user             = $sumo::proxy_user
+  $skipRegistration       = $sumo::skipRegistration
+  $sources                = $sumo::sources
+  $sumo_exec              = $sumo::sumo_exec
+  $sumo_json_source_path  = $sumo::sumo_json_source_path
+  $sumo_json_sync_source  = $sumo::sumo_json_sync_source
+  $sumo_short_arch        = $sumo::sumo_short_arch
+  $syncSources            = $sumo::syncSources
+  $targetCPU              = $sumo::targetCPU
+  $timeZone               = $sumo::timeZone
+  $token                  = $sumo::token
+  $winRunAs_password      = undef
+
+  if ! defined(Class['sumo']) {
+    fail('You must include the sumo base class before including any sumo sub classes')
   }
 
   file { '/usr/local/sumo':
@@ -55,6 +65,48 @@ class sumo::nix_config (
       content => template($sumo_conf_template_path),
     }
   }
+
+  file {
+    '/etc/sumo':
+      ensure  => 'directory',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600';
+
+    '/etc/sumo/sumoVarFile.txt':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+      content => epp('sumo/sumoVarFile.txt.epp', {
+        'accessid'        => $accessid,
+        'accesskey'       => $accesskey,
+        'category'        => $category,
+        'clobber'         => $clobber,
+        'collector_name'  => $collector_name,
+        'collector_secureFiles'   => $collector_secureFiles,
+        'collector_url'   => $collector_url,
+        'description'     => $description,
+        'disableActionSource'     => $disableActionSource,
+        'disableScriptSource'     => $disableScriptSource,
+        'disableUpgrade'  => $disableUpgrade,
+        'ephemeral'       => $ephemeral,
+        'hostName'        => $hostName,
+        'proxy_host'      => $proxy_host,
+        'proxy_ntlmdomain' => $proxy_ntlmdomain,
+        'proxy_password'  => $proxy_password,
+        'proxy_port'      => $proxy_port,
+        'proxy_user'      => $proxy_user,
+        'runAs_username'  => $runAs_username,
+        'skipRegistration'        => $skipRegistration,
+        'sources'         => $sources,
+        'syncSources'     => $syncSources,
+        'targetCPU'       => $targetCPU,
+        'timeZone'        => $timeZone,
+        'winRunAs_password'        => $winRunAs_password,
+      }),
+  }
+
 
   # Install from package?
   if $use_package and $sumo_package_provider != '' {
@@ -85,10 +137,16 @@ class sumo::nix_config (
     }
 
     exec { 'Execute sumo':
-      command => "/bin/sh /usr/local/sumo/${sumo_exec} -q",
+      command => "/bin/sh /usr/local/sumo/${sumo_exec} -q -varfile /etc/sumo/sumoVarFile.txt",
       cwd     => '/usr/local/sumo',
-      creates => '/opt/SumoCollector',
-      require => Exec['Download Sumo Executable'],
+      creates => '/opt/SumoCollector/jre',
+      require => File['/etc/sumo/sumoVarFile.txt'],
+      notify  => Service['collector'],
+    }
+
+    service { 'collector' :
+      ensure  => 'running',
+      enable  => true,
     }
   }
 }

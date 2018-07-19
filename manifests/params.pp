@@ -1,41 +1,31 @@
 # Shared params class
-class sumo::params {
-  if ($::osfamily == 'windows') {
-    $sumo_conf_source_path  = 'puppet:///modules/sumo/sumo_win.conf'
-    $sources = 'C:\sumo\sumo.json'
-  } else {
-    $sumo_conf_source_path  = 'puppet:///modules/sumo/sumo_nix.conf'
-    $sources = '/usr/local/sumo/sumo.json'
-    case $::architecture {
-      'x86_64', 'amd64': {
-        $sumo_exec       = 'sumo64.sh'
-        $sumo_short_arch = '64'
-      }
-      'x86': {
-        $sumo_exec       = 'sumo32.sh'
-        $sumo_short_arch = '32'
-      }
-      default: { fail("there is no supported arch ${::architecture}") }
-    }
-
-    case $::osfamily {
-      'Debian': {
-        $sumo_package_suffix   = "deb/${sumo_short_arch}"
-        $sumo_package_filename = 'sumocollector.deb'
-        $sumo_package_provider = 'dpkg'
-      }
-      'Redhat': {
-        $sumo_package_suffix   = "rpm/${sumo_short_arch}"
-        $sumo_package_filename = 'sumocollector.rpm'
-        $sumo_package_provider = 'rpm'
-      }
-      default: {
-        $sumo_package_provider = ''
-      }
-    }
+class sumo::params () {
+  $sumo_win_arch = $::architecture ? {
+    /(x86_64|amd64|x64)/    => 'win64',
+    'x86'                   => 'windows',
+    default                   => fail("there is no supported arch $::architecture}"),
   }
 
-  $sumo_conf_template_path = 'sumo/sumo.conf.erb'
-  $sumo_json_source_path = 'puppet:///modules/sumo/sumo.json'
-  $syncsources           = $sources
+  $sumo_exec = $::architecture ? {
+    /(x86_64|amd64|x64)/    => 'sumo64.sh',
+    'x86'                   => 'sumo32.sh',
+  }
+
+  $sumo_short_arch = $::architecture ? {
+    /x86_64|amd64|x64/      => '64',
+    'x86'                   => '32',
+    default                   => fail("there is no supported arch $::architecture}"),
+  }
+
+  $sumo_json_source_path = $::osfamily ? {
+    'windows'       => 'puppet:///modules/sumo/json/sumo_win.json',
+    default         => 'puppet:///modules/sumo/json/sumo_nix.json',
+  }
+
+  $sources = $::osfamily ? {
+    'windows'       => 'C:\\sumo\\sumo.json',
+    default         => '/usr/local/sumo/sumo.json',
+  }
+
+  $syncSources           = $sources
 }
