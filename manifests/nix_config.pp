@@ -1,152 +1,166 @@
-class sumo::nix_config (
-  $runAs_username         = undef,
-) {
+#The Nix configuration class
+class sumo::nix_config () {
   ########## Parameters Section ##########
+
   $accessid               = $sumo::accessid
   $accesskey              = $sumo::accesskey
   $category               = $sumo::category
   $clobber                = $sumo::clobber
   $collector_name         = $sumo::collector_name
-  $collector_secureFiles  = $sumo::collector_secureFiles
+  $collector_secure_files  = $sumo::collector_secure_files
   $collector_url          = $sumo::collector_url
   $description            = $sumo::description
-  $disableActionSource    = $sumo::disableActionSource
-  $disableScriptSource    = $sumo::disableScriptSource
-  $disableUpgrade         = $sumo::disableUpgrade
+  $disable_action_source  = $sumo::disable_action_source
+  $disable_script_source  = $sumo::disable_script_source
+  $disable_upgrade        = $sumo::disable_upgrade
   $ephemeral              = $sumo::ephemeral
-  $hostName               = $sumo::hostName
+  $hostname               = $sumo::hostname
   $local_exec_file        = $sumo::local_exec_file
   $manage_download        = $sumo::manage_download
   $manage_sources         = $sumo::manage_sources
+  $manage_sync_sources    = $sumo::manage_sync_sources
   $proxy_host             = $sumo::proxy_host
   $proxy_ntlmdomain       = $sumo::proxy_ntlmdomain
   $proxy_password         = $sumo::proxy_password
   $proxy_port             = $sumo::proxy_port
   $proxy_user             = $sumo::proxy_user
-  $skipRegistration       = $sumo::skipRegistration
+  $skip_registration      = $sumo::skip_registration
   $sources                = $sumo::sources
-  $sumo_exec              = $sumo::sumo_exec
   $sumo_json_source_path  = $sumo::sumo_json_source_path
-  $sumo_json_sync_source  = $sumo::sumo_json_sync_source
-  $sumo_short_arch        = $sumo::sumo_short_arch
-  $syncSources            = $sumo::syncSources
-  $targetCPU              = $sumo::targetCPU
-  $timeZone               = $sumo::timeZone
+  $sumo_json_sync_source_path  = $sumo::sumo_json_sync_source_path
+  $sync_sources           = $sumo::sync_sources
+  $target_cpu             = $sumo::target_cpu
+  $time_zone              = $sumo::time_zone
   $token                  = $sumo::token
-  $winRunAs_password      = undef
+  $runas_username         = $sumo::runas_username
+  $use_package            = $sumo::use_package
+  $sumo_package_provider  = $sumo::sumo_package_provider
+  $sources_file           = $sumo::sources_file
+
+
+
+  ############# Make sure base sumo class is defined #########
 
   if ! defined(Class['sumo']) {
-    fail('You must include the sumo base class before including any sumo sub classes')
+    fail('You must include the sumo base class before including any sumo sub classes.')
   }
 
+  ############ Make sure the collector is not already installed ########### Not working, need to write a custom fact
+
+  # if ('ps -ef | grep -v grep | grep -q com.sumologic.scala.collector.Collector') == 0
+  # {
+  #   fail('The Sumo Logic Collector is already installed!')
+  # }
+
+  ########### Make sure that the base directory is created. The installation package is downloaded to this directory. ###############
   file { '/usr/local/sumo':
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
   }
 
+  ########### Manage Sources? Get the sources file from puppet. ###########
   if $manage_sources {
     file { $sources:
       ensure  => present,
       owner   => 'root',
       mode    => '0600',
       group   => 'root',
-      source  => $sumo::sumo_json_source_path,
+      source  => $sumo_json_source_path,
       require => File['/usr/local/sumo']
     }
   }
 
-  if $manage_config_file {
-    file { '/etc/sumo.conf':
+  ########### Manage Sync-Sources? Get the sync-sources file from puppet. ###########
+
+  if ($manage_sync_sources) {
+    file { $sync_sources :
       ensure  => present,
       owner   => 'root',
-      group   => 'root',
       mode    => '0600',
-      content => template($sumo_conf_template_path),
-    }
-  }
-
-  file {
-    '/etc/sumo':
-      ensure  => 'directory',
-      owner   => 'root',
       group   => 'root',
-      mode    => '0600';
+      source  => $sumo_json_sync_source_path,
+      require => File['/usr/local/sumo']
 
-    '/etc/sumo/sumoVarFile.txt':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0600',
-      content => epp('sumo/sumoVarFile.txt.epp', {
-        'accessid'        => $accessid,
-        'accesskey'       => $accesskey,
-        'category'        => $category,
-        'clobber'         => $clobber,
-        'collector_name'  => $collector_name,
-        'collector_secureFiles'   => $collector_secureFiles,
-        'collector_url'   => $collector_url,
-        'description'     => $description,
-        'disableActionSource'     => $disableActionSource,
-        'disableScriptSource'     => $disableScriptSource,
-        'disableUpgrade'  => $disableUpgrade,
-        'ephemeral'       => $ephemeral,
-        'hostName'        => $hostName,
-        'proxy_host'      => $proxy_host,
-        'proxy_ntlmdomain' => $proxy_ntlmdomain,
-        'proxy_password'  => $proxy_password,
-        'proxy_port'      => $proxy_port,
-        'proxy_user'      => $proxy_user,
-        'runAs_username'  => $runAs_username,
-        'skipRegistration'        => $skipRegistration,
-        'sources'         => $sources,
-        'syncSources'     => $syncSources,
-        'targetCPU'       => $targetCPU,
-        'timeZone'        => $timeZone,
-        'winRunAs_password'        => $winRunAs_password,
-      }),
-  }
-
-
-  # Install from package?
-  if $use_package and $sumo_package_provider != '' {
-    exec { 'Download SumoCollector Package':
-      command => "/usr/bin/curl -o /usr/local/sumo/${sumo_package_filename} -q https://collectors.sumologic.com/rest/download/${sumo_package_suffix}",
-      cwd     => '/usr/bin',
-      creates => "/usr/local/sumo/${sumo_package_filename}",
-      require => File['/usr/local/sumo'],
-    }
-    package { 'sumocollector':
-      ensure   => installed,
-      provider => $sumo_package_provider,
-      source   => $dl_filename,
-      require  => Exec['Download SumoCollector Package'],
-    }
-    service { 'sumocollector':
-      ensure   => running,
-      enable   => true,
-      require  => Package['sumocollector'],
     }
   }
+
+  ########### Manage Config File? Get the config file from puppet ############
+  #
+  #  if $manage_config_file {
+  #    file { '/etc/sumo.conf':
+  #      ensure  => present,
+  #      owner   => 'root',
+  #      group   => 'root',
+  #      mode    => '0600',
+  #      content => template($sumo_conf_template_path),
+  #    }
+  #  }
+
+  ########### Create user.properties if using package to install #############
+
+  if $use_package  {
+
+    if $sumo_package_provider == ''
+    {
+      fail("Package installation not supported on this architecture: ${::architecture}")
+    }
+
+    # User.properties should be created in the install class after package installation using requires
+    # otherwise the installer creates issues while installation.
+    # if created here, the requires keyword will create a cyclic dependency.
+
+  }
+
+  ########### Create var file if using downloading and installing #############
+
   else {
-    exec { 'Download Sumo Executable':
-      command => "/usr/bin/curl -o /usr/local/sumo/${sumo_exec} https://collectors.sumologic.com/rest/download/linux/${sumo_short_arch}",
-      cwd     => '/usr/bin',
-      creates => "/usr/local/sumo/${sumo_exec}",
-      require => File['/usr/local/sumo'],
-    }
 
-    exec { 'Execute sumo':
-      command => "/bin/sh /usr/local/sumo/${sumo_exec} -q -varfile /etc/sumo/sumoVarFile.txt",
-      cwd     => '/usr/local/sumo',
-      creates => '/opt/SumoCollector/jre',
-      require => File['/etc/sumo/sumoVarFile.txt'],
-      notify  => Service['collector'],
-    }
+    file {
+      '/etc/sumo':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0600';
 
-    service { 'collector' :
-      ensure  => 'running',
-      enable  => true,
+      '/etc/sumo/sumoVarFile.txt':
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0600',
+        content => epp('sumo/sumoVarFile.txt.epp', {
+          'accessid'               => $accessid,
+          'accesskey'              => $accesskey,
+          'category'               => $category,
+          'clobber'                => $clobber,
+          'collector_name'         => $collector_name,
+          'collector_secure_files' => $collector_secure_files,
+          'collector_url'          => $collector_url,
+          'description'            => $description,
+          'disable_action_source'  => $disable_action_source,
+          'disable_script_source'  => $disable_script_source,
+          'disable_upgrade'        => $disable_upgrade,
+          'ephemeral'              => $ephemeral,
+          'hostName'               => $hostname,
+          'proxy_host'             => $proxy_host,
+          'proxy_ntlmdomain'       => $proxy_ntlmdomain,
+          'proxy_password'         => $proxy_password,
+          'proxy_port'             => $proxy_port,
+          'proxy_user'             => $proxy_user,
+          'runas_username'         => $runas_username,
+          'skip_registration'      => $skip_registration,
+          'sources'                => $sources,
+          'sync_sources'           => $sync_sources,
+          'target_cpu'             => $target_cpu,
+          'time_zone'              => $time_zone,
+          'sources_file'           => $sources_file,
+          'token'                  => $token,
+          'manage_sources'         => $manage_sources,
+          'manage_sync_sources'    => $manage_sync_sources,
+        }),
     }
   }
+
+
+
 }

@@ -16,7 +16,9 @@ class sumo::win_config (
   $sumo_conf_source_path  = $sumo::sumo_conf_source_path,
   $sumo_exec              = $sumo::sumo_exec,
   $sumo_short_arch        = $sumo::sumo_short_arch,
-  $syncsources            = $sumo::syncsources,
+  $sync_sources            = $sumo::sync_sources,
+  $runas_username         = $sumo::runas_username,
+  $win_run_as_password    = $sumo::win_run_as_password,
 ) {
   unless ($accessid != undef and $accesskey != undef) {
     fail(

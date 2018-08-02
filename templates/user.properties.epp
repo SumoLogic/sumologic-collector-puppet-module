@@ -1,11 +1,13 @@
 # This file is managed by Puppet
-# This file is used by the command line installer.
+# This file is used by the package installer.
+# Add wrapper.java.command, wrapper.java.initmemory, wrapper.java.maxmemory
+# https://help.sumologic.com/Send-Data/Installed-Collectors/05Reference-Information-for-Collector-Installation/06user.properties
 <% if $accessid and $accesskey { -%>
-sumo.accessid=<%= $accessid %>
-sumo.accesskey=<%= $accesskey %>
+accessid=<%= $accessid %>
+accesskey=<%= $accesskey %>
 <% } -%>
 <% if $token { -%>
-sumo.token_and_url=<%= $token %>
+token=<%= $token %>
 <% } -%>
 <% if $category { -%>
 category=<%= $category %>
@@ -14,13 +16,13 @@ category=<%= $category %>
 clobber=<%= $clobber %>
 <% } -%>
 <% if $collector_name { -%>
-collector.name=<%= $collector_name %>
+name=<%= $collector_name %>
 <% } -%>
 <% if $collector_secure_files { -%>
-collector.secureFiles=<%= $collector_secure_files %>
+secureFiles=<%= $collector_secure_files %>
 <% } -%>
 <% if $collector_url { -%>
-collector.url=<%= $collector_url %>
+url=<%= $collector_url %>
 <% } -%>
 <% if $description { -%>
 description=<%= $description %>
@@ -41,19 +43,19 @@ ephemeral=<%= $ephemeral %>
 hostName=<%= $hostname %>
 <% } -%>
 <% if $proxy_host { -%>
-proxy.host=<%= $proxy_host %>
+proxyHost=<%= $proxy_host %>
 <% } -%>
 <% if $proxy_ntlmdomain { -%>
-proxy.ntlmdomain=<%= $proxy_ntlmdomain %>
+proxyNtlmdomain=<%= $proxy_ntlmdomain %>
 <% } -%>
 <% if $proxy_password { -%>
-proxy.password=<%= $proxy_password %>
+proxyPassword=<%= $proxy_password %>
 <% } -%>
 <% if $proxy_port { -%>
-proxy.port=<%= $proxy_port %>
+proxyPort=<%= $proxy_port %>
 <% } -%>
 <% if $proxy_user { -%>
-proxy.user=<%= $proxy_user %>
+proxyUser=<%= $proxy_user %>
 <% } -%>
 <% if $runas_username { -%>
 runAs.username=<%= $runas_username %>
