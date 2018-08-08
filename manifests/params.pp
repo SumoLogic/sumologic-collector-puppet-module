@@ -22,7 +22,7 @@ class sumo::params () {
     default         => 'puppet:///modules/sumo/sumo_nix.json',
   }
 
-  $sources = $::osfamily ? {
+  $sources_path = $::osfamily ? {
     'windows'       => 'C:\\sumo\\sources.json',
     default         => '/usr/local/sumo/sources.json',
   }
@@ -33,7 +33,7 @@ class sumo::params () {
   }
 
 
-  $sync_sources = $::osfamily ? {
+  $sync_sources_path = $::osfamily ? {
     'windows'       => 'C:\\sumo\\syncsources.json',
     default         => '/usr/local/sumo/syncsources.json',
   }
@@ -44,7 +44,7 @@ class sumo::params () {
 
       if $sumo_short_arch != '64'
       {
-        fail("Debian package supported only for 64 bit architecture.")
+        fail('Debian package supported only for 64 bit architecture.')
 
       }
 
@@ -56,7 +56,7 @@ class sumo::params () {
 
       if $sumo_short_arch != '64'
       {
-        fail("Redhat package supported only for 64 bit architecture.")
+        fail('Redhat package supported only for 64 bit architecture.')
 
       }
 

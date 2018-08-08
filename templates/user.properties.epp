@@ -13,7 +13,9 @@ token=<%= $token %>
 category=<%= $category %>
 <% } -%>
 <% if $clobber { -%>
-clobber=<%= $clobber %>
+clobber=true
+<% } else {-%>
+clobber=false
 <% } -%>
 <% if $collector_name { -%>
 name=<%= $collector_name %>
@@ -37,7 +39,9 @@ disableScriptSource=<%= $disable_script_source %>
 disableUpgrade=<%= $disable_upgrade %>
 <% } -%>
 <% if $ephemeral { -%>
-ephemeral=<%= $ephemeral %>
+ephemeral=true
+<% } else {-%>
+ephemeral=false
 <% } -%>
 <% if $hostname { -%>
 hostName=<%= $hostname %>
@@ -63,11 +67,11 @@ runAs.username=<%= $runas_username %>
 <% if $skip_registration { -%>
 skipRegistration=<%= $skip_registration %>
 <% } -%>
-<% if $sources and ($sources_file == 'sources.json' or $manage_sources) { -%>
-sources=<%= $sources %>
+<% if $sources_path and !$local_config_mgmt { -%>
+sources=<%= $sources_path %>
 <% } -%>
-<% if $sync_sources and ($sources_file == 'syncsources.json' or $manage_sync_sources){ -%>
-syncSources=<%= $sync_sources %>
+<% if $sync_sources_path and $local_config_mgmt{ -%>
+syncSources=<%= $sync_sources_path %>
 <% } -%>
 <% if $target_cpu { -%>
 targetCPU=<%= $target_cpu %>

@@ -31,7 +31,7 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     jgrep (1.5.0)
-    json (2.0.4)
+    json (2.1.0)
     json-schema (2.8.0)
       addressable (>= 2.4)
     locale (2.1.2)
@@ -58,7 +58,7 @@ GEM
     parallel (1.12.1)
     parallel_tests (2.14.2)
       parallel
-    parser (2.5.1.0)
+    parser (2.5.1.2)
       ast (~> 2.4.0)
     powerpack (0.1.2)
     pry (0.10.4)
@@ -74,9 +74,9 @@ GEM
       multi_json (~> 1.10)
     puppet-blacksmith (4.1.2)
       rest-client (~> 2.0)
-    puppet-lint (2.3.5)
-    puppet-module-posix-default-r2.4 (0.3.5)
-    puppet-module-posix-dev-r2.4 (0.3.5)
+    puppet-lint (2.3.6)
+    puppet-module-posix-default-r2.1 (0.3.5)
+    puppet-module-posix-dev-r2.1 (0.3.5)
       codecov (~> 0.1.10)
       gettext-setup (~> 0.26)
       metadata-json-lint (>= 2.0.2, < 3.0.0)
@@ -99,7 +99,7 @@ GEM
       simplecov (>= 0.14.1, < 1.0.0)
       simplecov-console (~> 0.4.2)
       specinfra (= 2.67.3)
-    puppet-strings (2.0.0)
+    puppet-strings (2.1.0)
       rgen
       yard (~> 0.9.5)
     puppet-syntax (2.4.1)
@@ -131,7 +131,7 @@ GEM
     rspec-mocks (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.7.0)
-    rspec-puppet (2.6.13)
+    rspec-puppet (2.6.14)
       rspec
     rspec-puppet-facts (1.9.0)
       facter
@@ -179,19 +179,18 @@ GEM
     unf_ext (0.0.7.5)
     unicode-display_width (1.4.0)
     url (0.3.2)
-    yard (0.9.14)
+    yard (0.9.15)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   fast_gettext
-  json (<= 2.0.4)
   puppet
-  puppet-module-posix-default-r2.4
-  puppet-module-posix-dev-r2.4
-  puppet-module-win-default-r2.4
-  puppet-module-win-dev-r2.4
+  puppet-module-posix-default-r2.1
+  puppet-module-posix-dev-r2.1
+  puppet-module-win-default-r2.1
+  puppet-module-win-dev-r2.1
 
 BUNDLED WITH
    1.16.3
