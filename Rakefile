@@ -7,7 +7,7 @@ require 'rspec/core/rake_task'
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_autoloader_layout')
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
-PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "templates/**"]
+PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "templates/*.epp"]
 
 RSpec::Core::RakeTask.new(:rspec) do |t|
   t.pattern = 'spec/*/*_spec.rb'
