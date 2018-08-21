@@ -1,5 +1,5 @@
 # This file is managed by Puppet
-<% if $accessid and $accesskey { -%>
+<% if ($accessid and $accesskey) { -%>
 sumo.accessid=<%= $accessid %>
 sumo.accesskey=<%= $accesskey %>
 <% } -%>
@@ -69,10 +69,10 @@ skipAccessKeyRemoval=false
 <% if $skip_registration { -%>
 skipRegistration=<%= $skip_registration %>
 <% } -%>
-<% if $sources_path and !$local_config_mgmt { -%>
+<% if ($sources_path and !$local_config_mgmt) { -%>
 sources=<%= $sources_path %>
 <% } -%>
-<% if $sync_sources_path and $local_config_mgmt{ -%>
+<% if ($sync_sources_path and $local_config_mgmt){ -%>
 syncSources=<%= $sync_sources_path %>
 <% } -%>
 <% if $target_cpu { -%>

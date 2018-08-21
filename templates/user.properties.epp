@@ -2,7 +2,7 @@
 # This file is used by the package installer.
 # Add wrapper.java.command, wrapper.java.initmemory, wrapper.java.maxmemory
 # https://help.sumologic.com/Send-Data/Installed-Collectors/05Reference-Information-for-Collector-Installation/06user.properties
-<% if $accessid and $accesskey { -%>
+<% if ($accessid and $accesskey) { -%>
 accessid=<%= $accessid %>
 accesskey=<%= $accesskey %>
 <% } -%>
@@ -72,10 +72,10 @@ skipAccessKeyRemoval=false
 <% if $skip_registration { -%>
 skipRegistration=<%= $skip_registration %>
 <% } -%>
-<% if $sources_path and !$local_config_mgmt { -%>
+<% if ($sources_path and !$local_config_mgmt) { -%>
 sources=<%= $sources_path %>
 <% } -%>
-<% if $sync_sources_path and $local_config_mgmt{ -%>
+<% if ($sync_sources_path and $local_config_mgmt){ -%>
 syncSources=<%= $sync_sources_path %>
 <% } -%>
 <% if $target_cpu { -%>
