@@ -1,46 +1,45 @@
 # The official SumoLogic collector puppet module
 class sumo (
-  $accessid                      = undef,
-  $accesskey                     = undef,
-  $category                      = undef,
-  Boolean $clobber               = false,
-  $collector_name                = undef,
-  $collector_secure_files        = undef,
-  $collector_url                 = 'https\://nite-events.sumologic.net', # https://collectors.sumologic.com
-  $description                   = undef,
-  #$dir                          = undef, #future enhacement
-  #skipAccessKeyRemoval
-  $disable_action_source         = undef,
-  $disable_script_source         = undef,
-  $disable_upgrade               = undef,
-  Boolean $ephemeral             = false,
-  $hostname                      = $::hostname,
-  Boolean $local_config_mgmt     = false,
-  Boolean $manage_sources        = false,
-  Boolean $sources_override      = false,
-  Boolean $sync_sources_override = false,
-  $proxy_host                    = undef,
-  $proxy_ntlmdomain              = undef,
-  $proxy_password                = undef,
-  $proxy_port                    = undef,
-  $proxy_user                    = undef,
-  $runas_username                = undef,
-  $skip_registration             = undef,
-  $sources_path                  = $sumo::params::sources_path,
-  $sumo_exec                     = $sumo::params::sumo_exec,
-  $sumo_json_source_path         = $sumo::params::sumo_json_source_path,
-  $sumo_json_sync_source_path    = $sumo::params::sumo_json_sync_source_path,
-  $sumo_package_suffix           = $sumo::params::sumo_package_suffix,
-  $sumo_package_provider         = $sumo::params::sumo_package_provider,
-  $sumo_package_filename         = $sumo::params::sumo_package_filename,
-  $sumo_short_arch               = $sumo::params::sumo_short_arch,
-  $sumo_win_arch                 = $sumo::params::sumo_win_arch,
-  $sync_sources_path             = $sumo::params::sync_sources_path,
-  $target_cpu                    = undef,
-  $token                         = undef,
-  $time_zone                     = undef,
-  Boolean $use_package           = false,
-  $win_run_as_password           = undef,
+  $accessid                        = undef,
+  $accesskey                       = undef,
+  $category                        = undef,
+  Boolean $clobber                 = false,
+  $collector_name                  = undef,
+  $collector_secure_files          = undef,
+  $collector_url                   = 'https\://nite-events.sumologic.net', # https://collectors.sumologic.com
+  $description                     = undef,
+  #$dir                            = undef, #future enhacement
+  $disable_action_source           = undef,
+  $disable_script_source           = undef,
+  $disable_upgrade                 = undef,
+  Boolean $ephemeral               = false,
+  $hostname                        = $::hostname,
+  Boolean $local_config_mgmt       = false,
+  Boolean $manage_sources          = false,
+  Boolean $sources_override        = false,
+  Boolean $sync_sources_override   = false,
+  $proxy_host                      = undef,
+  $proxy_ntlmdomain                = undef,
+  $proxy_password                  = undef,
+  $proxy_port                      = undef,
+  $proxy_user                      = undef,
+  $runas_username                  = undef,
+  Boolean $skip_access_key_removal = false,
+  $skip_registration               = undef,
+  $sources_directory_or_file       = 'file',
+  $sumo_exec                       = $sumo::params::sumo_exec,
+  $sumo_json_source_path           = $sumo::params::sumo_json_source_path,
+  $sumo_json_sync_source_path      = $sumo::params::sumo_json_sync_source_path,
+  $sumo_package_suffix             = $sumo::params::sumo_package_suffix,
+  $sumo_package_provider           = $sumo::params::sumo_package_provider,
+  $sumo_package_filename           = $sumo::params::sumo_package_filename,
+  $sumo_short_arch                 = $sumo::params::sumo_short_arch,
+  $sumo_win_arch                   = $sumo::params::sumo_win_arch,
+  $target_cpu                      = undef,
+  $token                           = undef,
+  $time_zone                       = undef,
+  Boolean $use_package             = false,
+  $win_run_as_password             = undef,
 ) inherits sumo::params {
 
   if ($accessid and $accesskey) or ($token) {
@@ -65,6 +64,8 @@ class sumo (
   validate_bool($sync_sources_override)
   validate_bool($local_config_mgmt)
   validate_bool($use_package)
+  validate_bool($skip_access_key_removal)
+
 
 
   if $category { validate_string($category)}
@@ -95,11 +96,77 @@ class sumo (
     $sources_file_override = false
   }
 
+
+
   if $::osfamily == 'windows'{
 
+
+    if ($sources_directory_or_file == 'dir' or $sources_directory_or_file == 'directory') {
+
+      if (!$sources_file_override)
+      {
+        $sources_path = 'C:\\\\sumo'
+      }
+      else
+      {
+        $sources_path = 'C:\\\\sumo\\\\sources.json'
+      }
+
+      if (!$sync_sources_override)
+      {
+        $sync_sources_path = 'C:\\\\sumo'
+      }
+      else
+      {
+        $sync_sources_path = 'C:\\\\sumo\\\\syncsources.json'
+      }
+
+    }
+    elsif $local_config_mgmt {
+
+      $sync_sources_path = 'C:\\\\sumo\\\\syncsources.json'
+    }
+    else
+    {
+      $sources_path = 'C:\\\\sumo\\\\sources.json'
+    }
+
+
     include ::sumo::win_config
+    include ::sumo::win_install
+    Class['sumo::win_config'] -> Class['sumo::win_install'] #Class win_config must be applied before install
 
   } else {
+
+    if ($sources_directory_or_file == 'dir' or $sources_directory_or_file == 'directory'){
+
+      if (!$sources_file_override)
+      {
+        $sources_path = '/usr/local/sumo/'
+      }
+      else
+      {
+        $sources_path = '/usr/local/sumo/sources.json'
+      }
+
+      if (!$sync_sources_override)
+      {
+        $sync_sources_path = '/usr/local/sumo/'
+      }
+      else
+      {
+        $sync_sources_path = '/usr/local/sumo/syncsources.json'
+      }
+
+    }
+    elsif $local_config_mgmt {
+
+      $sync_sources_path = '/usr/local/sumo/syncsources.json'
+    }
+    else
+    {
+      $sources_path = '/usr/local/sumo/sources.json'
+    }
 
     include ::sumo::nix_config
     include ::sumo::nix_install

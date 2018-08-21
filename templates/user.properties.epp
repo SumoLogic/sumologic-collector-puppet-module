@@ -64,6 +64,11 @@ proxyUser=<%= $proxy_user %>
 <% if $runas_username { -%>
 runAs.username=<%= $runas_username %>
 <% } -%>
+<% if $skip_access_key_removal { -%>
+skipAccessKeyRemoval=true
+<% } else {-%>
+skipAccessKeyRemoval=false
+<% } -%>
 <% if $skip_registration { -%>
 skipRegistration=<%= $skip_registration %>
 <% } -%>

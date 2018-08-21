@@ -22,21 +22,11 @@ class sumo::params () {
     default         => 'puppet:///modules/sumo/sumo_nix.json',
   }
 
-  $sources_path = $::osfamily ? {
-    'windows'       => 'C:\\sumo\\sources.json',
-    default         => '/usr/local/sumo/sources.json',
-  }
-
   $sumo_json_sync_source_path = $::osfamily ? {
     'windows'       => 'puppet:///modules/sumo/sumo_sync_win.json',
     default         => 'puppet:///modules/sumo/sumo_sync_nix.json',
   }
 
-
-  $sync_sources_path = $::osfamily ? {
-    'windows'       => 'C:\\sumo\\syncsources.json',
-    default         => '/usr/local/sumo/syncsources.json',
-  }
 
   case $::osfamily {
 
@@ -65,6 +55,8 @@ class sumo::params () {
       $sumo_package_provider = 'rpm'
     }
     default: {
+      $sumo_package_suffix   = ''
+      $sumo_package_filename = ''
       $sumo_package_provider = ''
     }
   }

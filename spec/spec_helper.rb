@@ -1,6 +1,7 @@
-
-require 'puppetlabs_spec_helper/module_spec_helper'
+require 'rspec-puppet/spec_helper'
 require 'rspec-puppet-facts'
+
+fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 
 begin
   require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_local.rb'))
@@ -9,7 +10,6 @@ rescue LoadError => loaderror
 end
 
 include RspecPuppetFacts
-
 default_facts = {
   puppetversion: Puppet.version,
   facterversion: Facter.version,
@@ -27,6 +27,9 @@ if File.exist?(default_module_facts_path) && File.readable?(default_module_facts
 end
 
 RSpec.configure do |c|
+  c.module_path = File.join(fixture_path, 'modules')
+  c.manifest_dir = File.join(fixture_path, 'manifests')
+  c.environmentpath = File.join(Dir.pwd, 'spec')
   c.default_facts = default_facts
   c.before :each do
     # set to strictest setting for testing
