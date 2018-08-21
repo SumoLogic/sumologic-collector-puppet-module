@@ -8,7 +8,7 @@ before_install:
   - rm -f Gemfile.lock
   - gem update --system
   - gem --version
-  - bundle -vscript: "bundle exec rake test"
+script: "bundle exec rake test"
 rvm:
   - 1.9.3
   - 2.0.0
