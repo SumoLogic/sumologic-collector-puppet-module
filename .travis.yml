@@ -1,6 +1,14 @@
 ---
+sudo: false
+dist: trusty
 language: ruby
-script: "bundle exec rake test"
+cache: bundler
+before_install:
+  - bundle -v
+  - rm -f Gemfile.lock
+  - gem update --system
+  - gem --version
+  - bundle -vscript: "bundle exec rake test"
 rvm:
   - 1.9.3
   - 2.0.0
