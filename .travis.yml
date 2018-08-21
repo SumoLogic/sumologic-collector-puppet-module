@@ -10,7 +10,7 @@ before_install:
   - gem --version
 script: "bundle exec rake test"
 rvm:
-#  - 1.9.3 #Not supported as the current module uses epp templates which fail the ruby syntax check.
+#  - 1.9.3 #Not supported as the current module uses epp templates which fails the ruby syntax check.
   - 2.0.0
   - 2.1
   - 2.4
