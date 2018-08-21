@@ -1,5 +1,4 @@
 # This file is managed by Puppet
-# This file is used by the command line installer.
 <% if $accessid and $accesskey { -%>
 sumo.accessid=<%= $accessid %>
 sumo.accesskey=<%= $accesskey %>
