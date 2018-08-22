@@ -1,7 +1,6 @@
 #The Win install class
 class sumo::win_install(
     ########## Parameters Section ##########
-
     $accessid                      = $sumo::accessid,
     $accesskey                     = $sumo::accesskey,
     $category                      = $sumo::category,
@@ -39,6 +38,8 @@ class sumo::win_install(
 
     if !str2bool($::service_file_exists_win)
     {
+
+      ############ Create var file for installation   ########
 
       file { 'C:\sumo\sumoVarFile.txt':
         ensure  => 'file',
@@ -80,12 +81,16 @@ class sumo::win_install(
         require => File['C:\sumo'];
       }
 
+      ############ Download Installer   ########
+
       $powershell_path = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'
       exec { 'download_sumo':
         command => "${powershell_path} -executionpolicy remotesigned -file C:\\sumo\\download_sumo.ps1",
         require => File['C:\sumo\download_sumo.ps1'],
         creates => 'C:\sumo\sumo.exe'
       }
+
+      ############ Install Collector  ########
 
       package { 'sumologic':
         ensure          => installed,
@@ -100,6 +105,8 @@ class sumo::win_install(
     else {
       notice('Service already installed.')
     }
+
+    ####### Make sure that the collector service is running ###########
 
     service { 'collector':
       ensure => 'running',

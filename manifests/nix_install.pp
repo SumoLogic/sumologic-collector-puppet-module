@@ -125,9 +125,10 @@ class sumo::nix_install(
 
       }
 
-      ####### Download Script based installer and Install ###########
 
       else {
+        ####### Download Script based installer and Install ###########
+
 
         ########## Remove existing package if present ############
 

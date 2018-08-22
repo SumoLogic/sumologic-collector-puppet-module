@@ -1,6 +1,6 @@
 # class for sumologic windows config
 class sumo::win_config (
-
+  ########## Parameters Section ##########
   $collector_url                 = $sumo::collector_url,
   $local_config_mgmt             = $sumo::local_config_mgmt,
   $sources_file_override         = $sumo::sources_file_override,
@@ -28,7 +28,7 @@ class sumo::win_config (
   }
 
 
-  ############# Make sure syncsources file exists if the manage sync sources is false and local_config_mgmt is true #########
+  ############# Make sure syncsources file exists if the sync sources override is false and local_config_mgmt is true #########
 
   if ($local_config_mgmt and !$sync_sources_override){
 
@@ -43,7 +43,7 @@ class sumo::win_config (
     }
   }
 
-
+  ########### Create sumo directory and copy the powershell script for downloading the installer ##########
   file {
     'C:\sumo\download_sumo.ps1':
       ensure  => present,
@@ -60,7 +60,7 @@ class sumo::win_config (
   }
 
 
-  ########### Manage Sources? Get the sources file from puppet. ###########
+  ########### Override Sources? Get the sources file from puppet. ###########
   if ($sources_file_override and !$local_config_mgmt){
     file { $sources_path:
       ensure  => present,
@@ -71,7 +71,7 @@ class sumo::win_config (
     }
   }
 
-  ########### Manage Sync-Sources? Get the sync-sources file from puppet. ###########
+  ########### Override Sync-Sources? Get the sync-sources file from puppet. ###########
 
   if ($sync_sources_override and $local_config_mgmt) {
     file { $sync_sources_path :

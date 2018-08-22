@@ -1,7 +1,6 @@
 #The Nix configuration class
 class sumo::nix_config (
   ########## Parameters Section ##########
-
   $accessid                      = $sumo::accessid,
   $accesskey                     = $sumo::accesskey,
   $category                      = $sumo::category,
@@ -60,7 +59,7 @@ class sumo::nix_config (
   }
 
 
-  ############# Make sure syncsources file exists if the manage sync sources is false and local_config_mgmt is true #########
+  ############# Make sure syncsources file exists if the sync sources override is false and local_config_mgmt is true #########
 
   if ($local_config_mgmt and !$sync_sources_override){
 
@@ -85,7 +84,7 @@ class sumo::nix_config (
     group  => 'root',
   }
 
-  ########### Manage Sources? Get the sources file from puppet. ###########
+  ########### Override Sources? Get the sources file from puppet. ###########
   if ($sources_file_override and !$local_config_mgmt){
     file { $sources_path:
       ensure  => present,
@@ -97,7 +96,7 @@ class sumo::nix_config (
     }
   }
 
-  ########### Manage Sync-Sources? Get the sync-sources file from puppet. ###########
+  ########### Override Sync-Sources? Get the sync-sources file from puppet. ###########
 
   if ($sync_sources_override and $local_config_mgmt) {
     file { $sync_sources_path :
@@ -125,13 +124,13 @@ class sumo::nix_config (
         fail("Package installation not supported on this architecture: ${::architecture}")
       }
 
-      # User.properties should be created in the install class after package installation using requires
+      # User.properties should be created in the install class after package installation
       # otherwise the installer creates issues while installation.
       # if created here, the requires keyword will create a cyclic dependency.
 
     }
 
-    ########### Create var file if using downloading and installing #############
+    ########### Create var file if using script for installation #############
 
     else {
 
