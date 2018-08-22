@@ -7,10 +7,8 @@ class sumo::win_config (
   $sync_sources_override         = $sumo::sync_sources_override,
   $sources_directory_or_file     = $sumo::sources_directory_or_file,
   $sources_path                  = $sumo::sources_path,
-  $source_json_default_path      = $sumo::source_json_default_path,
   $sumo_json_source_path         = $sumo::sumo_json_source_path,
   $sumo_json_sync_source_path    = $sumo::sumo_json_sync_source_path,
-  $sync_source_json_default_path = $sumo::sync_source_json_default_path,
   $sync_sources_path             = $sumo::sync_sources_path
 ){
   ############# Make sure sources file exists if the sources file should not be overridden and local_config_mgmt is false #########
@@ -49,7 +47,6 @@ class sumo::win_config (
       ensure  => present,
       mode    => '0777',
       group   => 'Administrators',
-      source  => 'puppet:///modules/sumo/download_sumo.ps1',
       require => File['C:\sumo'],
       content => epp('sumo/download_sumo.ps1.epp', {'collector_url' => $collector_url,});
 

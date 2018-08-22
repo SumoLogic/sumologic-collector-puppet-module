@@ -6,7 +6,7 @@ class sumo (
   Boolean $clobber                 = false,
   $collector_name                  = undef,
   $collector_secure_files          = undef,
-  $collector_url                   = 'https\://nite-events.sumologic.net', # https://collectors.sumologic.com
+  $collector_url                   = 'https://nite-events.sumologic.net', # https://collectors.sumologic.com
   $description                     = undef,
   #$dir                            = undef, #future enhacement
   $disable_action_source           = undef,
@@ -125,10 +125,12 @@ class sumo (
     elsif $local_config_mgmt {
 
       $sync_sources_path = 'C:\\\\sumo\\\\syncsources.json'
+      $sources_path = ''
     }
     else
     {
       $sources_path = 'C:\\\\sumo\\\\sources.json'
+      $sync_sources_path = ''
     }
 
 
@@ -162,10 +164,12 @@ class sumo (
     elsif $local_config_mgmt {
 
       $sync_sources_path = '/usr/local/sumo/syncsources.json'
+      $sources_path = ''
     }
     else
     {
       $sources_path = '/usr/local/sumo/sources.json'
+      $sync_sources_path = ''
     }
 
     include ::sumo::nix_config
