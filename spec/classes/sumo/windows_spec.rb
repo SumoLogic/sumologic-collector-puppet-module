@@ -80,7 +80,7 @@ describe 'sumo' do
     let(:facts) { { osfamily: 'Windows', architecture: 'x86_64', sources_file_exists_win: true, sync_file_exists_win: false, service_file_exists_win: true } }
     let(:params) { { accessid: 'accessid', accesskey: 'accesskey', local_config_mgmt: false, sources_override: false } }
 
-    it { is_expected.to contain_service('collector') }
+    it { is_expected.to contain_service('sumo-collector') }
   end
 
   context 'with sync sources_override true and local_config_mgmt true and service already exists' do
