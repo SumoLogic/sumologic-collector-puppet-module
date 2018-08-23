@@ -16,7 +16,9 @@ describe 'sumo' do
     it { is_expected.to contain_file('C:\sumo\download_sumo.ps1') }
     it { is_expected.to contain_file('C:\sumo\sumoVarFile.txt') }
     it { is_expected.to contain_exec('download_sumo') }
-    it { is_expected.to contain_package('sumologic') }
+    it { is_expected.to contain_package('sumo-collector') }
+    it { is_expected.to contain_service('sumo-collector') }
+
   end
 
   context 'with sources_override true ' do
@@ -29,7 +31,7 @@ describe 'sumo' do
     it { is_expected.to contain_file('C:\\\\sumo\\\\sources.json') }
     it { is_expected.to contain_file('C:\sumo\sumoVarFile.txt') }
     it { is_expected.to contain_exec('download_sumo') }
-    it { is_expected.to contain_package('sumologic') }
+    it { is_expected.to contain_package('sumo-collector') }
   end
 
   context 'with sync_sources_override false and local_config_mgmt true' do
@@ -41,7 +43,9 @@ describe 'sumo' do
     it { is_expected.to contain_file('C:\sumo\download_sumo.ps1') }
     it { is_expected.to contain_file('C:\sumo\sumoVarFile.txt') }
     it { is_expected.to contain_exec('download_sumo') }
-    it { is_expected.to contain_package('sumologic') }
+    it { is_expected.to contain_package('sumo-collector') }
+    it { is_expected.to contain_service('sumo-collector') }
+
   end
 
   context 'with sync_sources_override true and local_config_mgmt true' do
@@ -54,7 +58,8 @@ describe 'sumo' do
     it { is_expected.to contain_file('C:\\\\sumo\\\\syncsources.json') }
     it { is_expected.to contain_file('C:\sumo\sumoVarFile.txt') }
     it { is_expected.to contain_exec('download_sumo') }
-    it { is_expected.to contain_package('sumologic') }
+    it { is_expected.to contain_package('sumo-collector') }
+    it { is_expected.to contain_service('sumo-collector') }
   end
 
   context 'with sources_override false and local_config_mgmt false and source file does not exist' do
@@ -83,6 +88,6 @@ describe 'sumo' do
     let(:params) { { accessid: 'accessid', accesskey: 'accesskey', local_config_mgmt: true, sync_sources_override: true } }
 
     it { is_expected.to contain_file('C:\\\\sumo\\\\syncsources.json') }
-    it { is_expected.to contain_service('collector') }
+    it { is_expected.to contain_service('sumo-collector') }
   end
 end
