@@ -57,16 +57,6 @@ class sumo (
   }
 
 
-  validate_bool($clobber)
-  validate_bool($ephemeral)
-  validate_bool($manage_sources)
-  validate_bool($sources_override)
-  validate_bool($sync_sources_override)
-  validate_bool($local_config_mgmt)
-  validate_bool($use_package)
-  validate_bool($skip_access_key_removal)
-
-
 
   if $category { validate_string($category)}
   if $collector_name { validate_string($collector_name) }
