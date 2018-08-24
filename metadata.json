@@ -1,5 +1,5 @@
 {
-  "name": "sumo",
+  "name": "sumo-logic",
   "version": "0.2.0",
   "author": "SumoLogic",
   "summary": "Provides SumoLogic collector installation and configuration",
