@@ -1,6 +1,6 @@
 {
-  "name": "arunpatyal-sumo",
-  "version": "0.1.5",
+  "name": "sumo",
+  "version": "0.2.0",
   "author": "SumoLogic",
   "summary": "Provides SumoLogic collector installation and configuration",
   "license": "Apache-2.0",
