@@ -30,8 +30,14 @@ group :development do
 end
 
 group :system_tests do
+
+  if RUBY_VERSION < '2.2.5'
+    gem "beaker-rspec", '<= 5.6.0'
+  else
+    gem "beaker-rspec"
+  end
+
   gem "beaker"
-  gem "beaker-rspec"
   gem 'beaker-vagrant'
   gem 'vagrant-wrapper'
   gem 'beaker-puppet'
