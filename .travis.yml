@@ -15,9 +15,9 @@ rvm:
   - 2.1
   - 2.4
 env:
-  - PUPPET_GEM_VERSION=4.6.1
-  - PUPPET_GEM_VERSION=4.10.0
-  - PUPPET_GEM_VERSION=5.5.3
+  - PUPPET_VERSION=4.6.1
+  - PUPPET_VERSION=4.10.0
+  - PUPPET_VERSION=5.5.3
 matrix:
   fast_finish: true
 notifications:
@@ -25,12 +25,12 @@ notifications:
 matrix:
   exclude:
     - rvm: 2.0.0
-      env: PUPPET_GEM_VERSION=4.10.0
+      env: PUPPET_VERSION=4.10.0
     - rvm: 2.0.0
-      env: PUPPET_GEM_VERSION=5.5.3
+      env: PUPPET_VERSION=5.5.3
     - rvm: 2.1
-      env: PUPPET_GEM_VERSION=5.5.3
+      env: PUPPET_VERSION=5.5.3
     - rvm: 2.4
-      env: PUPPET_GEM_VERSION=4.6.1
+      env: PUPPET_VERSION=4.6.1
     - rvm: 2.4
-      env: PUPPET_GEM_VERSION=4.10.0
+      env: PUPPET_VERSION=4.10.0

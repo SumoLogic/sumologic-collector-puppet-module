@@ -30,19 +30,13 @@ group :development do
 end
 
 group :system_tests do
-
-  if RUBY_VERSION < '2.2.5'
-    gem "beaker-rspec", '<= 5.6.0'
-  else
     gem "beaker-rspec"
-  end
-
-  gem "beaker"
-  gem 'beaker-vagrant'
-  gem 'vagrant-wrapper'
-  gem 'beaker-puppet'
-  gem 'beaker-puppet_install_helper'
-  gem 'beaker-module_install_helper'
+    gem "beaker"
+    gem 'beaker-vagrant'
+    gem 'vagrant-wrapper'
+    gem 'beaker-puppet'
+    gem 'beaker-puppet_install_helper'
+    gem 'beaker-module_install_helper'
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
