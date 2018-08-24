@@ -54,6 +54,18 @@ class sumo::params () {
       $sumo_package_filename = 'sumocollector.rpm'
       $sumo_package_provider = 'rpm'
     }
+    'Suse': {
+
+      if $sumo_short_arch != '64'
+      {
+        fail('Redhat package supported only for 64 bit architecture.')
+
+      }
+
+      $sumo_package_suffix   = "rpm/${sumo_short_arch}"
+      $sumo_package_filename = 'sumocollector.rpm'
+      $sumo_package_provider = 'rpm'
+    }
     default: {
       $sumo_package_suffix   = ''
       $sumo_package_filename = ''
