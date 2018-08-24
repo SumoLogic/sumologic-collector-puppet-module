@@ -9,8 +9,14 @@ PuppetLint.configuration.send('disable_autoloader_layout')
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
 PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "templates/*.epp"]
 
+desc "Run acceptance tests"
+RSpec::Core::RakeTask.new(:acceptance) do |t|
+  t.pattern = 'spec/acceptance'
+end
+
+desc "Run unit tests"
 RSpec::Core::RakeTask.new(:rspec) do |t|
-  t.pattern = 'spec/*/*_spec.rb'
+  t.pattern = 'spec/classes/sumo/*_spec.rb'
 end
 
 desc "Validate manifests, templates, and ruby files"
@@ -37,7 +43,7 @@ task :lint_output do
 end
 
 task :validate do
-  Dir['manifests/**/*.pp'].each do |manifest|
+  Dir['manifests/*.pp'].each do |manifest|
     sh "puppet parser validate --noop #{manifest}"
   end
 end
