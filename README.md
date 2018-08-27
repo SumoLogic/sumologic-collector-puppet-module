@@ -10,7 +10,7 @@ sumo-collector-puppet-module
 
 ## Setup
 
-To install Sumo Puppet Module follow below steps.
+To install Sumo Puppet Module follow below steps:
 * Navigate to Puppet global modules directory or specific environment modules directory.
 * Clone the Sumo Puppet module.
 * Rename the module as sumo.    
@@ -29,7 +29,7 @@ OR
 
 Additional optional parameters can be passed as required. The parameters details are explained in the next section.
 
-###Examples
+##Examples
 
 A basic example, using accesskey/accessid, module expects the sources.json to be present on agent nodes in the default directory:
 
