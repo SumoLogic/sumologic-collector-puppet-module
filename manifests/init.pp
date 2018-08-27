@@ -6,7 +6,7 @@ class sumo (
   Boolean $clobber                 = false,
   $collector_name                  = undef,
   $collector_secure_files          = undef,
-  $collector_url                   = 'https://collectors.sumologic.com'
+  $collector_url                   = 'https://collectors.sumologic.com',
   $description                     = undef,
   #$dir                            = undef, #future enhacement
   $disable_action_source           = undef,
