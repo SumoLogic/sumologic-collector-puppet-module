@@ -6,9 +6,8 @@ describe 'sumo class: management of sources' do
   it 'should work idempotently with no errors' do
     pp = <<-EOS
     class { 'sumo':
-      accessid           => 'suDjgwyOrmk6ac',
-      accesskey          => 'AG6pi346LNMKjQ6oYV0cjCAYLYfuDswX6TLygw2YHtdiTbYiV8jOuPVskhkx7b6c',
-      collector_url      => 'https://nite-events.sumologic.net',
+      accessid           => 'Type access ID here',
+      accesskey          => 'Type access key here',
       manage_sources     => true,
     }
     EOS
