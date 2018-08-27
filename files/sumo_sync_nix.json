@@ -1,0 +1,53 @@
+{
+  "api.version": "v1",
+  "sources": [
+    {
+      "name": "linux_audit_logs",
+      "sourceType": "LocalFile",
+      "automaticDateParsing": true,
+      "multilineProcessingEnabled": false,
+      "useAutolineMatching": true,
+      "forceTimeZone": false,
+      "timeZone": "America/New_York",
+      "encoding": "UTF-8",
+      "category": "OS/Linux/Security",
+      "pathExpression": "/var/log/audit/audit.log"
+    },
+    {
+      "name": "linux_yum_logs",
+      "sourceType": "LocalFile",
+      "automaticDateParsing": true,
+      "multilineProcessingEnabled": false,
+      "useAutolineMatching": true,
+      "forceTimeZone": false,
+      "timeZone": "America/New_York",
+      "encoding": "UTF-8",
+      "category": "OS/Linux/System",
+      "pathExpression": "/var/log/yum.log"
+    },
+    {
+      "name": "linux_auth_logs",
+      "sourceType": "LocalFile",
+      "automaticDateParsing": true,
+      "multilineProcessingEnabled": false,
+      "useAutolineMatching": true,
+      "forceTimeZone": false,
+      "timeZone": "America/New_York",
+      "encoding": "UTF-8",
+      "category": "OS/Linux/System",
+      "pathExpression": "/var/log/secure"
+    },
+    {
+      "name": "linux_syslog_logs",
+      "sourceType": "LocalFile",
+      "automaticDateParsing": true,
+      "multilineProcessingEnabled": false,
+      "useAutolineMatching": true,
+      "forceTimeZone": false,
+      "timeZone": "America/New_York",
+      "encoding": "UTF-8",
+      "category": "OS/Linux/System",
+      "pathExpression": "/var/log/messages"
+    }
+  ]
+}

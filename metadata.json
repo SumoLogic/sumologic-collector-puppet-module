@@ -1,21 +1,56 @@
 {
-  "name": "sumo",
-  "version": "0.1.5",
+  "name": "sumo-logic",
+  "version": "0.2.0",
   "author": "SumoLogic",
   "summary": "Provides SumoLogic collector installation and configuration",
   "license": "Apache-2.0",
   "source": "https://github.com/SumoLogic/sumo-collector-puppet-module",
   "project_page": "https://github.com/SumoLogic/sumo-collector-puppet-module",
   "issues_url": "https://github.com/SumoLogic/sumo-collector-puppet-module/issues",
-  "dependencies": [],
-  "requirements": [
+  "dependencies": [
     {
-      "name": "pe",
-      "version_requirement": "3.x"
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.12.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7",
+        "8"
+      ]
     },
     {
-      "name": "puppet",
-      "version_requirement": ">=3.0.0 <4.1.0"
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04",
+        "16.04"
+      ]
+    },
+    {
+      "operatingsystem": "windows",
+      "operatingsystemrelease": [
+        "2008 R2",
+        "2012 R2"
+      ]
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">=4.6.0"
+    }
+  ],
+  "pdk-version": "1.6.0",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.6.0-0-gf5564c0"
 }

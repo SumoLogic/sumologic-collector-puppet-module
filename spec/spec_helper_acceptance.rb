@@ -1,16 +1,11 @@
-require 'beaker-rspec/spec_helper'
-require 'beaker-rspec/helpers/serverspec'
+require 'beaker-rspec'
+require 'beaker-puppet'
+require 'beaker/puppet_install_helper'
+require 'beaker/module_install_helper'
 
-unless ENV['BEAKER_provision'] == 'no'
-  hosts.each do |host|
-    # Install Puppet
-    if host.is_pe?
-      install_pe
-    else
-      install_puppet
-    end
-  end
-end
+run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
+install_module
+install_module_dependencies
 
 RSpec.configure do |c|
   # Project root
@@ -25,8 +20,8 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'sumo')
     
     # Will likely need stdlib in the future, just uncomment this
-    #hosts.each do |host|
-    #  on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
-    #end
+    hosts.each do |host|
+      on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+    end
   end
 end

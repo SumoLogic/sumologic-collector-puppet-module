@@ -1,47 +1,49 @@
+require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet/version'
-require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f < 3.6
-require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
+require 'puppet-lint/tasks/puppet-lint'
+require 'rspec/core/rake_task'
 
-# These gems aren't always present, for instance
-# on Travis with --without development
-begin
-  require 'puppet_blacksmith/rake_tasks'
-rescue LoadError
-end
-
-Rake::Task[:lint].clear
-
-PuppetLint.configuration.relative = true
-PuppetLint.configuration.send("disable_80chars")
-PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
-PuppetLint.configuration.fail_on_warnings = true
-
-# Forsake support for Puppet 2.6.2 for the benefit of cleaner code.
-# http://puppet-lint.com/checks/class_parameter_defaults/
-PuppetLint.configuration.send('disable_class_parameter_defaults')
-# http://puppet-lint.com/checks/class_inherits_from_params_class/
+PuppetLint.configuration.send('disable_80chars')
+PuppetLint.configuration.send('disable_autoloader_layout')
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
-
-exclude_paths = [
-  "bundle/**/*",
-  "pkg/**/*",
-  "vendor/**/*",
-  "spec/**/*",
-]
-PuppetLint.configuration.ignore_paths = exclude_paths
-PuppetSyntax.exclude_paths = exclude_paths
+PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "templates/*.epp"]
 
 desc "Run acceptance tests"
 RSpec::Core::RakeTask.new(:acceptance) do |t|
   t.pattern = 'spec/acceptance'
 end
 
-desc "Run syntax, lint, and spec tests."
+desc "Run unit tests"
+RSpec::Core::RakeTask.new(:rspec) do |t|
+  t.pattern = 'spec/classes/sumo/*_spec.rb'
+end
+
+desc "Validate manifests, templates, and ruby files"
 task :test => [
-  :syntax,
-  :lint,
-  :spec,
-  :validate,
+    :syntax,
+    :validate_output,
+    :validate,
+    :spec_output,
+    :spec,
+    :lint_output,
+    :lint,
 ]
+
+task :validate_output do
+  puts '---> parser validate'
+end
+
+task :spec_output do
+  puts '---> spec'
+end
+
+task :lint_output do
+  puts '---> puppet-lint'
+end
+
+task :validate do
+  Dir['manifests/*.pp'].each do |manifest|
+    sh "puppet parser validate --noop #{manifest}"
+  end
+end

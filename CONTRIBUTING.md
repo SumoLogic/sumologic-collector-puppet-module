@@ -30,7 +30,7 @@ By default the tests use a baseline version of Puppet.
 If you have Ruby 2.x or want a specific version of Puppet,
 you must set an environment variable such as:
 
-    export PUPPET_VERSION="~> 3.2.0"
+    export PUPPET_VERSION="~> 5.5.3"
 
 Install the dependencies like so...
 
@@ -58,14 +58,6 @@ with:
 Note also you can run the syntax, style and unit tests in one go with:
 
     bundle exec rake test
-
-### Automatically run the tests
-
-During development of your puppet module you might want to run your unit
-tests a couple of times. You can use the following command to automate
-running the unit tests on every change made in the manifests folder.
-
-    bundle exec guard
 
 ## Integration tests
 

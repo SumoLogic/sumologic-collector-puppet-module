@@ -1,94 +1,185 @@
-# Class for sumologic nix config
+#The Nix configuration class
 class sumo::nix_config (
-  $accessid               = $sumo::accessid,
-  $accesskey              = $sumo::accesskey,
-  $clobber                = $sumo::clobber,
-  $collector_name         = $sumo::collector_name,
-  $ephemeral              = $sumo::ephemeral,
-  $manage_config_file     = $sumo::manage_config_file,
-  $manage_sources         = $sumo::manage_sources,
-  $proxy_host             = $sumo::proxy_host,
-  $proxy_ntlmdomain       = $sumo::proxy_ntlmdomain,
-  $proxy_password         = $sumo::proxy_password,
-  $proxy_port             = $sumo::proxy_port,
-  $proxy_user             = $sumo::proxy_user,
-  $sources                = $sumo::sources,
-  $sumo_conf_source_path  = $sumo::sumo_conf_source_path,
-  $sumo_conf_template_path  = $sumo::sumo_conf_template_path,
-  $sumo_exec              = $sumo::sumo_exec,
-  $sumo_short_arch        = $sumo::sumo_short_arch,
-  $syncsources            = $sumo::syncsources,
-  $use_package            = $sumo::use_package,
-  $sumo_package_suffix    = $sumo::sumo_package_suffix,
-  $sumo_package_provider  = $sumo::sumo_package_provider,
-  $sumo_package_filename  = $sumo::sumo_package_filename,
+  ########## Parameters Section ##########
+  $accessid                      = $sumo::accessid,
+  $accesskey                     = $sumo::accesskey,
+  $category                      = $sumo::category,
+  $clobber                       = $sumo::clobber,
+  $collector_name                = $sumo::collector_name,
+  $collector_secure_files        = $sumo::collector_secure_files,
+  $collector_url                 = $sumo::collector_url,
+  $description                   = $sumo::description,
+  $disable_action_source         = $sumo::disable_action_source,
+  $disable_script_source         = $sumo::disable_script_source,
+  $disable_upgrade               = $sumo::disable_upgrade,
+  $ephemeral                     = $sumo::ephemeral,
+  $hostname                      = $sumo::hostname,
+  $local_config_mgmt             = $sumo::local_config_mgmt,
+  $proxy_host                    = $sumo::proxy_host,
+  $proxy_ntlmdomain              = $sumo::proxy_ntlmdomain,
+  $proxy_password                = $sumo::proxy_password,
+  $proxy_port                    = $sumo::proxy_port,
+  $proxy_user                    = $sumo::proxy_user,
+  $runas_username                = $sumo::runas_username,
+  $skip_access_key_removal       = $sumo::skip_access_key_removal,
+  $skip_registration             = $sumo::skip_registration,
+  $sources_file_override         = $sumo::sources_file_override,
+  $sync_sources_override         = $sumo::sync_sources_override,
+  $sources_path                  = $sumo::sources_path,
+  $sources_directory_or_file     = $sumo::sources_directory_or_file,
+  $sumo_json_source_path         = $sumo::sumo_json_source_path,
+  $sumo_json_sync_source_path    = $sumo::sumo_json_sync_source_path,
+  $sumo_package_provider         = $sumo::sumo_package_provider,
+  $sync_sources_path             = $sumo::sync_sources_path,
+  $target_cpu                    = $sumo::target_cpu,
+  $time_zone                     = $sumo::time_zone,
+  $token                         = $sumo::token,
+  $use_package                   = $sumo::use_package,
+
 ) {
-  unless ($accessid != undef and $accesskey != undef) {
-    fail(
-      'You must provide either an accesskey and accessid for the SumoLogic collector to connect with.'
-    )
+
+  ############# Make sure base sumo class is defined #########
+
+  if ! defined(Class['sumo']) {
+    fail('You must include the sumo base class before including any sumo sub classes.')
   }
 
+  ############# Make sure sources file exists if the sources file should not be overridden and local_config_mgmt is false #########
+
+  if ( !$local_config_mgmt and !$sources_file_override ){
+
+    if ($sources_directory_or_file == 'file' and !str2bool($::sources_file_exists))
+    {
+      fail('Please make sure sources.json exists in /usr/local/sumo/ directory.')
+    }
+    elsif (($sources_directory_or_file == 'dir' or $sources_directory_or_file == 'directory') and !str2bool($::sources_dir_exists))
+    {
+      fail('Please make sure that the directory /usr/local/sumo/ exists with source JSON file(s).')
+    }
+  }
+
+
+  ############# Make sure syncsources file exists if the sync sources override is false and local_config_mgmt is true #########
+
+  if ($local_config_mgmt and !$sync_sources_override){
+
+
+    if ($sources_directory_or_file == 'file' and !str2bool($::sync_file_exists))
+    {
+      fail('Please make sure syncsources.json exists in /usr/local/sumo/ directory.')
+    }
+    elsif (($sources_directory_or_file == 'dir' or $sources_directory_or_file == 'directory') and !str2bool($::sources_dir_exists))
+    {
+      fail('Please make sure that the directory /usr/local/sumo/ exists with sync source JSON file(s).')
+    }
+  }
+
+
+
+
+  ########### Make sure that the base directory is created. The installation package is downloaded to this directory. ###############
   file { '/usr/local/sumo':
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
   }
 
-  if $manage_sources {
-    file { $sources:
+  ########### Override Sources? Get the sources file from puppet. ###########
+  if ($sources_file_override and !$local_config_mgmt){
+    file { $sources_path:
       ensure  => present,
       owner   => 'root',
       mode    => '0600',
       group   => 'root',
-      source  => $sumo::sumo_json_source_path,
+      source  => $sumo_json_source_path,
       require => File['/usr/local/sumo']
     }
   }
 
-  if $manage_config_file {
-    file { '/etc/sumo.conf':
+  ########### Override Sync-Sources? Get the sync-sources file from puppet. ###########
+
+  if ($sync_sources_override and $local_config_mgmt) {
+    file { $sync_sources_path :
       ensure  => present,
       owner   => 'root',
-      group   => 'root',
       mode    => '0600',
-      content => template($sumo_conf_template_path),
+      group   => 'root',
+      source  => $sumo_json_sync_source_path,
+      require => File['/usr/local/sumo']
+
     }
   }
 
-  # Install from package?
-  if $use_package and $sumo_package_provider != '' {
-    exec { 'Download SumoCollector Package':
-      command => "/usr/bin/curl -o /usr/local/sumo/${sumo_package_filename} -q https://collectors.sumologic.com/rest/download/${sumo_package_suffix}",
-      cwd     => '/usr/bin',
-      creates => "/usr/local/sumo/${sumo_package_filename}",
-      require => File['/usr/local/sumo'],
-    }
-    package { 'sumocollector':
-      ensure   => installed,
-      provider => $sumo_package_provider,
-      source   => $dl_filename,
-      require  => Exec['Download SumoCollector Package'],
-    }
-    service { 'sumocollector':
-      ensure   => running,
-      enable   => true,
-      require  => Package['sumocollector'],
-    }
-  }
-  else {
-    exec { 'Download Sumo Executable':
-      command => "/usr/bin/curl -o /usr/local/sumo/${sumo_exec} https://collectors.sumologic.com/rest/download/linux/${sumo_short_arch}",
-      cwd     => '/usr/bin',
-      creates => "/usr/local/sumo/${sumo_exec}",
-      require => File['/usr/local/sumo'],
+
+
+  ############ Make sure the collector is not already installed and Create user.properties if using package to install#####
+
+  if !str2bool($::service_file_exists)
+  {
+
+    if $use_package  {
+
+      if $sumo_package_provider == ''
+      {
+        fail("Package installation not supported on this architecture: ${::architecture}")
+      }
+
+      # User.properties should be created in the install class after package installation
+      # otherwise the installer creates issues while installation.
+      # if created here, the requires keyword will create a cyclic dependency.
+
     }
 
-    exec { 'Execute sumo':
-      command => "/bin/sh /usr/local/sumo/${sumo_exec} -q",
-      cwd     => '/usr/local/sumo',
-      creates => '/opt/SumoCollector',
-      require => Exec['Download Sumo Executable'],
+    ########### Create var file if using script for installation #############
+
+    else {
+
+      file {
+        '/etc/sumo':
+          ensure => 'directory',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0600';
+
+        '/etc/sumo/sumoVarFile.txt':
+          ensure  => 'file',
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0600',
+          content => epp('sumo/sumoVarFile.txt.epp', {
+            'accessid'                => $accessid,
+            'accesskey'               => $accesskey,
+            'category'                => $category,
+            'clobber'                 => $clobber,
+            'collector_name'          => $collector_name,
+            'collector_secure_files'  => $collector_secure_files,
+            'collector_url'           => $collector_url,
+            'description'             => $description,
+            'disable_action_source'   => $disable_action_source,
+            'disable_script_source'   => $disable_script_source,
+            'disable_upgrade'         => $disable_upgrade,
+            'ephemeral'               => $ephemeral,
+            'hostName'                => $hostname,
+            'sources_file_override'   => $sources_file_override,
+            'sync_sources_override'   => $sync_sources_override,
+            'proxy_host'              => $proxy_host,
+            'proxy_ntlmdomain'        => $proxy_ntlmdomain,
+            'proxy_password'          => $proxy_password,
+            'proxy_port'              => $proxy_port,
+            'proxy_user'              => $proxy_user,
+            'runas_username'          => $runas_username,
+            'skip_access_key_removal' => $skip_access_key_removal,
+            'skip_registration'       => $skip_registration,
+            'sources_path'            => $sources_path,
+            'local_config_mgmt'       => $local_config_mgmt,
+            'sync_sources_path'       => $sync_sources_path,
+            'target_cpu'              => $target_cpu,
+            'time_zone'               => $time_zone,
+            'token'                   => $token,
+          }),
+      }
     }
+
   }
+
 }

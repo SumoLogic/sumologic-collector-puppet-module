@@ -1,0 +1,86 @@
+# This file is managed by Puppet
+<% if ($accessid and $accesskey) { -%>
+sumo.accessid=<%= $accessid %>
+sumo.accesskey=<%= $accesskey %>
+<% } -%>
+<% if $token { -%>
+sumo.token_and_url=<%= $token %>
+<% } -%>
+<% if $category { -%>
+category=<%= $category %>
+<% } -%>
+<% if $clobber { -%>
+clobber=true
+<% } else {-%>
+clobber=false
+<% } -%>
+<% if $collector_name { -%>
+collector.name=<%= $collector_name %>
+<% } -%>
+<% if $collector_secure_files { -%>
+collector.secureFiles=<%= $collector_secure_files %>
+<% } -%>
+<% if $collector_url { -%>
+collector.url=<%= $collector_url %>
+<% } -%>
+<% if $description { -%>
+description=<%= $description %>
+<% } -%>
+<% if $disable_action_source { -%>
+disableActionSource=<%= $disable_action_source %>
+<% } -%>
+<% if $disable_script_source { -%>
+disableScriptSource=<%= $disable_script_source %>
+<% } -%>
+<% if $disable_upgrade { -%>
+disableUpgrade=<%= $disable_upgrade %>
+<% } -%>
+<% if $ephemeral { -%>
+ephemeral=true
+<% } else {-%>
+ephemeral=false
+<% } -%>
+<% if $hostname { -%>
+hostName=<%= $hostname %>
+<% } -%>
+<% if $proxy_host { -%>
+proxy.host=<%= $proxy_host %>
+<% } -%>
+<% if $proxy_ntlmdomain { -%>
+proxy.ntlmdomain=<%= $proxy_ntlmdomain %>
+<% } -%>
+<% if $proxy_password { -%>
+proxy.password=<%= $proxy_password %>
+<% } -%>
+<% if $proxy_port { -%>
+proxy.port=<%= $proxy_port %>
+<% } -%>
+<% if $proxy_user { -%>
+proxy.user=<%= $proxy_user %>
+<% } -%>
+<% if $runas_username { -%>
+runAs.username=<%= $runas_username %>
+<% } -%>
+<% if $skip_access_key_removal { -%>
+skipAccessKeyRemoval=true
+<% } else {-%>
+skipAccessKeyRemoval=false
+<% } -%>
+<% if $skip_registration { -%>
+skipRegistration=<%= $skip_registration %>
+<% } -%>
+<% if ($sources_path and !$local_config_mgmt) { -%>
+sources=<%= $sources_path %>
+<% } -%>
+<% if ($sync_sources_path and $local_config_mgmt){ -%>
+syncSources=<%= $sync_sources_path %>
+<% } -%>
+<% if $target_cpu { -%>
+targetCPU=<%= $target_cpu %>
+<% } -%>
+<% if $time_zone { -%>
+timeZone=<%= $time_zone %>
+<% } -%>
+<% if $win_run_as_password { -%>
+winRunAs.password=<%= $win_run_as_password %>
+<% } -%>
