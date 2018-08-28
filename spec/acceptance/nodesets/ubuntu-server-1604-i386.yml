@@ -1,0 +1,12 @@
+HOSTS:
+  ubuntu-server-1604-i386:
+    roles:
+      - master
+    platform: ubuntu-1604-i386
+    box: ubuntu/xenial32
+    box_url: https://app.vagrantup.com/ubuntu/boxes/xenial32
+    hypervisor: vagrant
+
+CONFIG:
+  log_level: verbose
+  type: foss

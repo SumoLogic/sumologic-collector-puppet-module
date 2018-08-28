@@ -3,17 +3,21 @@ class sumo::params () {
   $sumo_win_arch = $::architecture ? {
     /(x86_64|amd64|x64)/    => 'win64',
     'x86'                   => 'windows',
+    'i386'                   => 'windows',
     default                 => fail("There is no supported arch:: ${::architecture}"),
   }
 
   $sumo_exec = $::architecture ? {
     /(x86_64|amd64|x64)/    => 'sumo64.sh',
     'x86'                   => 'sumo32.sh',
+    'i386'                  => 'sumo32.sh',
+    default                 => fail("There is no supported arch:: ${::architecture}"),
   }
 
   $sumo_short_arch = $::architecture ? {
     /x86_64|amd64|x64/      => '64',
     'x86'                   => '32',
+    'i386'                  => '32',
     default                 => fail("There is no supported arch:: ${::architecture}"),
   }
 
@@ -32,39 +36,45 @@ class sumo::params () {
 
     'Debian': {
 
-      if $sumo_short_arch != '64'
+      if $sumo_short_arch == '64'
       {
-        fail('Debian package supported only for 64 bit architecture.')
-
+        $sumo_package_suffix   = "deb/${sumo_short_arch}"
+        $sumo_package_filename = 'sumocollector.deb'
+        $sumo_package_provider = 'dpkg'
       }
-
-      $sumo_package_suffix   = "deb/${sumo_short_arch}"
-      $sumo_package_filename = 'sumocollector.deb'
-      $sumo_package_provider = 'dpkg'
+      else {
+        $sumo_package_suffix   = ''
+        $sumo_package_filename = ''
+        $sumo_package_provider = ''
+      }
     }
     'Redhat': {
 
-      if $sumo_short_arch != '64'
+      if $sumo_short_arch == '64'
       {
-        fail('Redhat package supported only for 64 bit architecture.')
-
+        $sumo_package_suffix   = "rpm/${sumo_short_arch}"
+        $sumo_package_filename = 'sumocollector.rpm'
+        $sumo_package_provider = 'rpm'
       }
-
-      $sumo_package_suffix   = "rpm/${sumo_short_arch}"
-      $sumo_package_filename = 'sumocollector.rpm'
-      $sumo_package_provider = 'rpm'
+      else {
+        $sumo_package_suffix   = ''
+        $sumo_package_filename = ''
+        $sumo_package_provider = ''
+      }
     }
     'Suse': {
 
-      if $sumo_short_arch != '64'
+      if $sumo_short_arch == '64'
       {
-        fail('Redhat package supported only for 64 bit architecture.')
-
+        $sumo_package_suffix   = "rpm/${sumo_short_arch}"
+        $sumo_package_filename = 'sumocollector.rpm'
+        $sumo_package_provider = 'rpm'
       }
-
-      $sumo_package_suffix   = "rpm/${sumo_short_arch}"
-      $sumo_package_filename = 'sumocollector.rpm'
-      $sumo_package_provider = 'rpm'
+      else {
+        $sumo_package_suffix   = ''
+        $sumo_package_filename = ''
+        $sumo_package_provider = ''
+      }
     }
     default: {
       $sumo_package_suffix   = ''
