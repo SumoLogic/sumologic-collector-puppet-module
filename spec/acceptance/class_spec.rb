@@ -36,4 +36,9 @@ describe 'sumo class: management of sources' do
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_grouped_into 'root' }
   end
+
+  describe service('collector') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
 end
