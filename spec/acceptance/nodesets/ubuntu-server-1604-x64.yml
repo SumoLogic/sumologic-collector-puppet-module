@@ -3,8 +3,8 @@ HOSTS:
     roles:
       - master
     platform: ubuntu-1604-amd64
-    box: puppetlabs/ubuntu-16.04-64-nocm
-    box_url: https://app.vagrantup.com/puppetlabs/boxes/ubuntu-16.04-64-nocm
+    box: ubuntu/xenial64
+    box_url: https://app.vagrantup.com/ubuntu/boxes/xenial64
     hypervisor: vagrant
 
 CONFIG:

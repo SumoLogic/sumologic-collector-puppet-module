@@ -1,0 +1,11 @@
+HOSTS:
+  debian-7-x64:
+    roles:
+      - master
+    platform: debian-7-amd64
+    box: debian/wheezy64
+    box_url: https://app.vagrantup.com/debian/boxes/wheezy64
+    hypervisor: vagrant
+
+CONFIG:
+  log_level: verbose

@@ -1,0 +1,12 @@
+HOSTS:
+  centos-6-x64:
+    roles:
+      - master
+    platform: el-6-x86_64
+    box: centos/6
+    box_url: https://app.vagrantup.com/centos/boxes/6
+    hypervisor: vagrant
+
+CONFIG:
+  log_level: verbose
+  type: foss

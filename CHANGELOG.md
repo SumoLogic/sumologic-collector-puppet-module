@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of sumologic-collector.
 
+## 0.2.1:
+August 28, 2018
+Merged [PR33](https://github.com/SumoLogic/sumo-collector-puppet-module/pull/33): Added Vagrant Beaker test configurations.   
+
+## 0.2.0:
+August 27, 2018
+Merged [PR32](https://github.com/SumoLogic/sumo-collector-puppet-module/pull/32): Upgraded the module to support latest sumo collector.   
 
 ## 0.1.5:
 Apr 04, 2016: 
