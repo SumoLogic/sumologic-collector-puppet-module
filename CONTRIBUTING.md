@@ -83,6 +83,10 @@ variable to the name of a host described by a `.yml` file in the
 
     BEAKER_set=centos-7-x64 bundle exec rake acceptance
 
+Another example for Debian:
+
+    BEAKER_set=debian-7-x64 BEAKER_IS_PE=no bundle exec rake acceptance
+
 If you don't want to have to recreate the virtual machine every time you
 can use `BEAKER_destroy=no` and `BEAKER_provision=no`. On the first run you will
 at least need `BEAKER_provision` set to yes (the default). The Vagrantfile
