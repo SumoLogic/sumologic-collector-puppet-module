@@ -1,6 +1,6 @@
 {
   "name": "sumo-logic",
-  "version": "0.2.0",
+  "version": "0.1.8",
   "author": "SumoLogic",
   "summary": "Provides SumoLogic collector installation and configuration",
   "license": "Apache-2.0",
@@ -47,7 +47,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=4.6.0"
+      "version_requirement": ">=3.8.7"
     }
   ],
   "pdk-version": "1.6.0",
