@@ -8,6 +8,17 @@ sumo-collector-puppet-module
 * Currently, the module only supports the installation of latest collector version.
 * Upgrade of the collector is not supported currently.
 
+#### Note: 
+For Puppet 4.x and later:
+
+* Utilize the release v0.2.1. Release v0.2.1 will be enhanced per puppet guidelines to support latest puppet versions.
+
+For Puppet 3.x:
+
+* Utilize the release v1.0.6 if you need sumo.conf compatibility.
+* Utilize the release v1.0.8 if you need latest SumoLogic collector compatibility.
+
+
 ## Setup
 
 To install Sumo Puppet Module follow below steps:
