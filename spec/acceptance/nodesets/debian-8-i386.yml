@@ -1,0 +1,12 @@
+HOSTS:
+  debian-8-i386:
+    roles:
+      - master
+    platform: debian-8-i386
+    box: puppetlabs/debian-8.2-32-puppet
+    box_url: https://app.vagrantup.com/puppetlabs/boxes/debian-8.2-32-puppet
+    hypervisor: vagrant
+
+CONFIG:
+  log_level: verbose
+  type: foss
