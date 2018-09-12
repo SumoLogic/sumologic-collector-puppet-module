@@ -82,4 +82,12 @@ class sumo::params () {
       $sumo_package_provider = ''
     }
   }
+
+  if $sumo_short_arch == '64'
+  {
+    $sumo_tanuki_wrapper = 'wrapper-linux-x86-64'
+  }
+  else {
+    $sumo_tanuki_wrapper = 'wrapper-linux-x86-32'
+  }
 }
