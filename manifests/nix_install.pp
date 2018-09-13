@@ -133,7 +133,7 @@ class sumo::nix_install(
 
         file { 'sumo_tar_package_rem':
           ensure => absent,
-          path   => "/opt/SumoCollector_unix.tar.gz",
+          path   => '/opt/SumoCollector_unix.tar.gz',
         }
 
         ########## Download Sumo Package ############
@@ -153,7 +153,7 @@ class sumo::nix_install(
         ########## Extract Sumo Tar Package ############
 
         exec { 'Extract SumoCollector Package':
-          command => "/usr/bin/tar -xvf /opt/sumo/SumoCollector_unix.tar.gz",
+          command => '/usr/bin/tar -xvf /opt/sumo/SumoCollector_unix.tar.gz',
           cwd     => '/usr/bin',
           creates => '/opt/SumoCollector',
           require => [
@@ -165,7 +165,7 @@ class sumo::nix_install(
         ########## Copy Tanuki Wrapper to sumocollector directory and chnage permissions ############
 
         exec { 'Copy Tanuki Wrapper':
-          command => "cp /opt/sumocollector/tanuki/$sumo_tanuki_wrapper /opt/sumocollector",
+          command => "cp /opt/sumocollector/tanuki/${sumo_tanuki_wrapper} /opt/sumocollector",
           path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
           require => [
             Exec['Extract SumoCollector Package'],
@@ -174,7 +174,7 @@ class sumo::nix_install(
 
 
         exec { 'Change wrapper permissions':
-          command => "chmod ug+x /opt/sumocollector/$sumo_tanuki_wrapper",
+          command => "chmod ug+x /opt/sumocollector/${sumo_tanuki_wrapper}",
           path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
           require => [
             Exec['Copy Tanuki Wrapper'],
@@ -246,7 +246,7 @@ class sumo::nix_install(
 
         exec { 'Set access control':
           command => 'sudo /opt/sumocollector/script/secureFiles.sh',
-          path => ['/usr/bin', '/usr/sbin',],
+          path    => ['/usr/bin', '/usr/sbin',],
           require => [
             File['user.properties'],
           ],
@@ -256,7 +256,7 @@ class sumo::nix_install(
 
         exec { 'Install the Collector':
           command => 'sudo /opt/sumocollector/collector install',
-          path => ['/usr/bin', '/usr/sbin',],
+          path    => ['/usr/bin', '/usr/sbin',],
           require => [
             Exec['Set access control'],
           ],
