@@ -40,7 +40,7 @@ class sumo (
   $token                           = undef,
   $time_zone                       = undef,
   Boolean $use_package             = false,
-  Boolean $use_tar_pkg                 = false,
+  Boolean $use_tar_pkg             = false,
   $win_run_as_password             = undef,
 ) inherits sumo::params {
 
