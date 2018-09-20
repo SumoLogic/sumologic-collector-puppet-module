@@ -13,3 +13,4 @@ HOSTS:
 
 CONFIG:
   log_level: verbose
+  type: foss

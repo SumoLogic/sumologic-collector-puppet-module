@@ -106,7 +106,7 @@ class { 'sumo':
 }
 ```
 
-Advanced example illustrating passing additional command-line parameters and using binary package for installation:
+Advanced example illustrating passing additional command-line parameters and using rpm or deb package for installation:
 
 ```Puppet
 class { 'sumo':
@@ -114,6 +114,22 @@ class { 'sumo':
   accesskey               => 'accesskey',
   sync_sources_override   => true,
   use_package	          => true,
+  local_config_mgmt       => true,
+  clobber                 => false, 
+  ephemeral               => true,
+  skip_access_key_removal => true,
+}
+```
+
+Advanced example illustrating tarball binary package for installation:
+
+```Puppet
+class { 'sumo':
+  accessid                => 'accessid',
+  accesskey               => 'accesskey',
+  sync_sources_override   => true,
+  use_package	          => false,
+  use_tar_pkg             => true,
   local_config_mgmt       => true,
   clobber                 => false, 
   ephemeral               => true,
@@ -166,7 +182,8 @@ The only required parameters are a pair of authentication parameters: `accessid`
 | sync_sources_override | If you want this module to manage your sync sources file                                                                                                                                                      | false
 | target_cpu            | You can choose to set a CPU target to limit the amount of CPU processing a Collector uses                                                                                                                     | undef
 | time_zone             | The time zone to use when the time zone can't be extracted from the time stamp                                                                                                                                | undef
-| use_package           | Install a binary package, not from script                                                                                                                                                                     | false
+| use_package           | Install from a rpm or a deb package. This flag overrides the tarball flag: use_tar_pkg i.e. if both use_package and use_tar_pkg are true, the rpm or the deb package will be used for installation.           | false
+| use_tar_pkg           | Install from a tarball.                                                                                                                                                                                       | false
 | win_run_as_password   | When set in conjunction with -VrunAs.username, the Collector will run as the specified user with the specified password                                                                                       | undef
 
 ## Testing / Contributing
