@@ -11,7 +11,7 @@ sumo-collector-puppet-module
 #### Note: 
 For Puppet 4.x and later:
 
-* Utilize the release v0.2.1 or later. Release v0.2.1 and later will be enhanced per puppet guidelines to support latest puppet versions.
+* Utilize the release v0.2.1 or later. Release v0.2.1 and subsequent v0.2.x releases will be enhanced per puppet guidelines to support latest puppet versions.
 
 For Puppet 3.x:
 
