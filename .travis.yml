@@ -10,9 +10,6 @@ before_install:
   - gem --version
 script: "bundle exec rake test"
 rvm:
-#  - 1.9.3 #Not supported as the current module uses epp templates which fails the ruby syntax check.
-  - 2.0.0
-  - 2.1
   - 2.4
 env:
   - PUPPET_VERSION=4.6.1
@@ -24,11 +21,7 @@ notifications:
   email: false
 matrix:
   exclude:
-    - rvm: 2.0.0
-      env: PUPPET_VERSION=4.10.0
-    - rvm: 2.0.0
-      env: PUPPET_VERSION=5.5.3
-    - rvm: 2.1
+    - rvm: 2.4
       env: PUPPET_VERSION=5.5.3
     - rvm: 2.4
       env: PUPPET_VERSION=4.6.1
