@@ -71,7 +71,50 @@ class sumo::nix_install(
 
         ########## Create user.properties ############
 
+      if str2bool($skip_registration)
+      {
+        file { 'user.properties':
+          ensure  => 'file',
+          path    => '/opt/SumoCollector/config/user.properties',
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          content => epp('sumo/user.properties.epp', {
+            'accessid'                => $accessid,
+            'accesskey'               => $accesskey,
+            'category'                => $category,
+            'clobber'                 => $clobber,
+            'collector_name'          => $collector_name,
+            'collector_secure_files'  => $collector_secure_files,
+            'collector_url'           => $collector_url,
+            'description'             => $description,
+            'disable_action_source'   => $disable_action_source,
+            'disable_script_source'   => $disable_script_source,
+            'disable_upgrade'         => $disable_upgrade,
+            'ephemeral'               => $ephemeral,
+            'hostName'                => $hostname,
+            'skip_access_key_removal' => $skip_access_key_removal,
+            'sources_file_override'   => $sources_file_override,
+            'sync_sources_override'   => $sync_sources_override,
+            'proxy_host'              => $proxy_host,
+            'proxy_ntlmdomain'        => $proxy_ntlmdomain,
+            'proxy_password'          => $proxy_password,
+            'proxy_port'              => $proxy_port,
+            'proxy_user'              => $proxy_user,
+            'runas_username'          => $runas_username,
+            'skip_registration'       => $skip_registration,
+            'sources_path'            => $sources_path,
+            'local_config_mgmt'       => $local_config_mgmt,
+            'sync_sources_path'       => $sync_sources_path,
+            'target_cpu'              => $target_cpu,
+            'time_zone'               => $time_zone,
+            'token'                   => $token,
 
+          }),
+          require => Package['collector'],
+        }
+      }
+      else{
         file { 'user.properties':
           ensure  => 'file',
           path    => '/opt/SumoCollector/config/user.properties',
@@ -113,6 +156,7 @@ class sumo::nix_install(
           require => Package['collector'],
           notify  => Service['collector'];
         }
+      }
 
         ########## Install Package ############
 
@@ -153,16 +197,28 @@ class sumo::nix_install(
         }
 
         ########## Install Sumo Executable package ############
-
-        exec { 'Execute sumo':
-          command => "/bin/sh /usr/local/sumo/${sumo_exec} -q -varfile /etc/sumo/sumoVarFile.txt",
-          cwd     => '/usr/local/sumo',
-          creates => '/opt/SumoCollector/jre',
-          require => File['/etc/sumo/sumoVarFile.txt'],
-          notify  => Service['collector'],
-          path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
-          unless  => 'ps -ef | grep -v grep | grep com.sumologic.scala.collector.Collector > /dev/null',
-
+        if str2bool($skip_registration)
+            {
+            exec { 'Execute sumo':
+              command => "/bin/sh /usr/local/sumo/${sumo_exec} -q -varfile /etc/sumo/sumoVarFile.txt",
+              cwd     => '/usr/local/sumo',
+              creates => '/opt/SumoCollector/jre',
+              require => File['/etc/sumo/sumoVarFile.txt'],
+              path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
+              unless  => 'ps -ef | grep -v grep | grep com.sumologic.scala.collector.Collector > /dev/null',
+            }
+        }
+        else
+        {
+            exec { 'Execute sumo':
+              command => "/bin/sh /usr/local/sumo/${sumo_exec} -q -varfile /etc/sumo/sumoVarFile.txt",
+              cwd     => '/usr/local/sumo',
+              creates => '/opt/SumoCollector/jre',
+              require => File['/etc/sumo/sumoVarFile.txt'],
+              notify  => Service['collector'],
+              path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
+              unless  => 'ps -ef | grep -v grep | grep com.sumologic.scala.collector.Collector > /dev/null',
+            }
         }
       } #Use Package
 
@@ -171,13 +227,17 @@ class sumo::nix_install(
     {
       notice('Service already installed.')
     }
-    ####### Make sure that the collector service is running ###########
 
-    service { 'collector':
-      ensure     => 'running',
-      hasstatus  => true,
-      hasrestart => true,
-      enable     => true,
+      if !str2bool($skip_registration)
+      {
+        ####### Make sure that the collector service is running ###########
+
+        service { 'collector':
+          ensure     => 'running',
+          hasstatus  => true,
+          hasrestart => true,
+          enable     => true,
+      }
     }
 
   }
