@@ -10,11 +10,11 @@ before_install:
   - gem --version
 script: "bundle exec rake test"
 rvm:
-  - 2.4
+  - 2.5
 env:
-  - PUPPET_VERSION=4.6.1
-  - PUPPET_VERSION=4.10.0
   - PUPPET_VERSION=5.5.3
+  - PUPPET_VERSION=6.10.0
+  - PUPPET_VERSION=6.14.0
 matrix:
   fast_finish: true
 notifications:
