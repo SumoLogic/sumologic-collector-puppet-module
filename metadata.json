@@ -1,6 +1,6 @@
 {
-  "name": "sumo-logic",
-  "version": "0.2.0",
+  "name": "sumologic-sumo",
+  "version": "0.2.3",
   "author": "SumoLogic",
   "summary": "Provides SumoLogic collector installation and configuration",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement": ">= 4.12.0"
+      "version_requirement": ">= 6.3.0"
     }
   ],
   "operatingsystem_support": [
@@ -50,7 +50,7 @@
       "version_requirement": ">=4.6.0"
     }
   ],
-  "pdk-version": "1.6.0",
-  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
-  "template-ref": "1.6.0-0-gf5564c0"
+  "pdk-version": "1.17.0",
+  "template-url": "pdk-default#1.17.0",
+  "template-ref": "tags/1.17.0-0-gd3a4319"
 }

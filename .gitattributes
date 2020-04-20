@@ -1,1 +1,5 @@
-templates/sumoVarFileWin.txt.epp eol=crlf
+*.rb eol=lf
+*.erb eol=lf
+*.pp eol=lf
+*.sh eol=lf
+*.epp eol=lf

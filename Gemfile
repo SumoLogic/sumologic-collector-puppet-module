@@ -1,72 +1,69 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 def location_for(place_or_version, fake_version = nil)
-  if place_or_version =~ %r{\A(git[:@][^#]*)#(.*)}
-    [fake_version, { git: Regexp.last_match(1), branch: Regexp.last_match(2), require: false }].compact
-  elsif place_or_version =~ %r{\Afile:\/\/(.*)}
-    ['>= 0', { path: File.expand_path(Regexp.last_match(1)), require: false }]
+  git_url_regex = %r{\A(?<url>(https?|git)[:@][^#]*)(#(?<branch>.*))?}
+  file_url_regex = %r{\Afile:\/\/(?<path>.*)}
+
+  if place_or_version && (git_url = place_or_version.match(git_url_regex))
+    [fake_version, { git: git_url[:url], branch: git_url[:branch], require: false }].compact
+  elsif place_or_version && (file_url = place_or_version.match(file_url_regex))
+    ['>= 0', { path: File.expand_path(file_url[:path]), require: false }]
   else
     [place_or_version, { require: false }]
   end
 end
 
-
-group :test do
-  gem "rake"
-  gem "rspec"
-  gem "puppetlabs_spec_helper"
-  gem "metadata-json-lint"
-  gem "rspec-puppet-facts"
-  gem 'puppet-lint'
-  gem 'puppet-syntax'
-end
+ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
+minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "travis"
-  gem "travis-lint"
-  gem "vagrant-wrapper"
-  gem "puppet-blacksmith"
-  gem "guard-rake"
+  gem "fast_gettext", '1.1.0',                                   require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')
+  gem "fast_gettext",                                            require: false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')
+  gem "json_pure", '<= 2.0.1',                                   require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')
+  gem "json", '= 1.8.1',                                         require: false if Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')
+  gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "json", '= 2.1.0',                                         require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "rb-readline", '= 0.5.5',                                  require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-posix-default-r#{minor_version}", '~> 0.4', require: false, platforms: [:ruby]
+  gem "puppet-module-posix-dev-r#{minor_version}", '~> 0.4',     require: false, platforms: [:ruby]
+  gem "puppet-module-win-default-r#{minor_version}", '~> 0.4',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-win-dev-r#{minor_version}", '~> 0.4',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem 'puppet_litmus'
+  gem 'serverspec'
 end
 
-group :system_tests do
-  if RUBY_VERSION >= '2.2.5'
-    gem "beaker-rspec"
-    gem "beaker"
-    gem 'beaker-vagrant'
-    gem 'vagrant-wrapper'
-    gem 'beaker-puppet'
-    gem 'beaker-puppet_install_helper'
-    gem 'beaker-module_install_helper'
-  end
+puppet_version = ENV['PUPPET_GEM_VERSION']
+facter_version = ENV['FACTER_GEM_VERSION']
+hiera_version = ENV['HIERA_GEM_VERSION']
+
+gems = {}
+
+gems['puppet'] = location_for(puppet_version)
+
+# If facter or hiera versions have been specified via the environment
+# variables
+
+gems['facter'] = location_for(facter_version) if facter_version
+gems['hiera'] = location_for(hiera_version) if hiera_version
+
+if Gem.win_platform? && puppet_version =~ %r{^(file:///|git://)}
+  # If we're using a Puppet gem on Windows which handles its own win32-xxx gem
+  # dependencies (>= 3.5.0), set the maximum versions (see PUP-6445).
+  gems['win32-dir'] =      ['<= 0.4.9', require: false]
+  gems['win32-eventlog'] = ['<= 0.6.5', require: false]
+  gems['win32-process'] =  ['<= 0.7.5', require: false]
+  gems['win32-security'] = ['<= 0.2.5', require: false]
+  gems['win32-service'] =  ['0.8.8', require: false]
 end
 
-if facterversion = ENV['FACTER_GEM_VERSION']
-  gem 'facter', facterversion.to_s, :require => false, :groups => [:test]
-else
-  gem 'facter', :require => false, :groups => [:test]
+gems.each do |gem_name, gem_params|
+  gem gem_name, *gem_params
 end
-
-if hieraversion = ENV['HIERA_GEM_VERSION']
-  gem 'hiera', hieraversion.to_s, :require => false, :groups => [:test]
-else
-  gem 'hiera', :require => false, :groups => [:test]
-end
-
-if rspecpuppetversion = ENV['RSPEC_PUPPET_VERSION']
-  gem 'rspec-puppet', rspecpuppetversion, :require => false
-else
-  gem 'rspec-puppet', '2.6.15'
-end
-
-ENV['PUPPET_VERSION'].nil? ? puppetversion = '~> 5.5' : puppetversion = ENV['PUPPET_VERSION'].to_s
-gem 'puppet', puppetversion, :require => false, :groups => [:test]
-
 
 # Evaluate Gemfile.local and ~/.gemfile if they exist
 extra_gemfiles = [
-    "#{__FILE__}.local",
-    File.join(Dir.home, '.gemfile'),
+  "#{__FILE__}.local",
+  File.join(Dir.home, '.gemfile'),
 ]
 
 extra_gemfiles.each do |gemfile|

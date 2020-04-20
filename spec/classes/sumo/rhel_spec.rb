@@ -135,4 +135,16 @@ describe 'sumo' do
     it { is_expected.to contain_file('/usr/local/sumo/syncsources.json') }
     it { is_expected.to contain_service('collector') }
   end
+
+  context 'with sources_override false and skip registration true' do
+    let(:params) { { accessid: 'accessid', accesskey: 'accesskey', sources_override: false, skip_registration: 'true' } }
+
+    it { is_expected.to contain_class('sumo::nix_config') }
+    it { is_expected.to contain_class('sumo::nix_install') }
+    it { is_expected.to contain_file('/usr/local/sumo') }
+    it { is_expected.to contain_file('/etc/sumo/sumoVarFile.txt') }
+    it { is_expected.to contain_exec('Download Sumo Executable') }
+    it { is_expected.to contain_exec('Execute sumo') }
+    it { is_expected.not_to contain_service('collector') }
+  end
 end

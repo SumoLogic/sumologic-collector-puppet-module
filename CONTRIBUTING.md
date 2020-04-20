@@ -2,7 +2,6 @@ This module has grown over time based on a range of contributions from
 people using it. If you follow these contributing guidelines your patch
 will likely make it into a release a little quicker.
 
-
 ## Contributing
 
 1. Fork the repo.
@@ -18,7 +17,6 @@ will likely make it into a release a little quicker.
 
 5. Push to your fork and submit a pull request.
 
-
 ## Dependencies
 
 The testing and development tools have a bunch of dependencies,
@@ -27,23 +25,23 @@ all managed by [Bundler](http://bundler.io/) according to the
 
 By default the tests use a baseline version of Puppet.
 
-If you have Ruby 2.x or want a specific version of Puppet,
-you must set an environment variable such as:
-
-    export PUPPET_VERSION="~> 5.5.3"
-
 Install the dependencies like so...
 
+    ```shell
     bundle install
+    ```
 
 ## Syntax and style
 
-The test suite will run [Puppet Lint](http://puppet-lint.com/) and
+The test suite will run [Puppet Lint](http://puppet-lint.com/), [rubocop](https://github.com/rubocop-hq/rubocop) and
 [Puppet Syntax](https://github.com/gds-operations/puppet-syntax) to
 check various syntax and style things. You can run these locally with:
 
+    ```shell
     bundle exec rake lint
     bundle exec rake syntax
+    bundle exec rake rubocop
+    ```
 
 ## Running the unit tests
 
@@ -53,41 +51,53 @@ add tests if you're adding new functionality. If you've not used
 about how best to test your new feature. Running the test suite is done
 with:
 
+    ```shell
     bundle exec rake spec
+    ```
 
 Note also you can run the syntax, style and unit tests in one go with:
 
+    ```shell
     bundle exec rake test
+    ```
 
 ## Integration tests
 
 The unit tests just check the code runs, not that it does exactly what
 we want on a real machine. For that we're using
-[Beaker](https://github.com/puppetlabs/beaker).
+[Litmus](https://github.com/puppetlabs/puppet_litmus).
 
-As a prerequisite to running the Beaker tests you will need an Access ID
-and Key which you can generate from your Account Preferences page.  Once
+As a prerequisite to running the Litmus tests you will need an Access ID
+and Key which you can generate from your Account Preferences page. Once
 you have a ID and Key you can insert them into `class_spec.rb` before
-running the tests.  Sign-up is free if you don't have an account.
+running the tests. Sign-up is free if you don't have an account.
 
-Beaker fires up a new virtual machine (using Vagrant) and runs a series of
+Litmus fires up a new virtual machine (using hypervisor of your choice) and runs a series of
 simple tests against it after applying the module. You can run our
-Beaker tests with:
+Litmus acceptance tests with following commands:
 
-    bundle exec rake acceptance
+    ```shell
+    bundle exec rake 'litmus:provision[docker, ubuntu:18.04]'
+    bundle exec rake litmus:install_agent[puppet6]
+    bundle exec rake litmus:install_module
+    bundle exec rake litmus:acceptance:parallel
+    ```
 
-This will use the host described in `spec/acceptance/nodeset/default.yml`
-by default. To run against another host, set the `BEAKER_set` environment
-variable to the name of a host described by a `.yml` file in the
-`nodeset` directory. For example, to run against CentOS 7:
+The above commands will create a VM using docker and ubuntu version 18.04, install puppet6 and the sumo module and will start executing the acceptance tests. To run against an another host, follow the steps [here](https://github.com/puppetlabs/puppet_litmus/wiki/Litmus-core-commands). For example, to run against Windows Server using Vagrant hypervisor:
 
-    BEAKER_set=centos-7-x64 bundle exec rake acceptance
+    ```shell
+    bundle exec rake 'litmus:provision[vagrant, gusztavvargadr/windows-server]'
+    ```
 
-Another example for Debian:
+To run against a set of environments, modify the `provision.yaml` and create your own list of environments. For example, the below command will create a set of environments as defined under the label `release_checks`:
 
-    BEAKER_set=debian-7-x64 BEAKER_IS_PE=no bundle exec rake acceptance
+    ```shell
+    bundle exec rake 'litmus:provision_list[release_checks]'
+    ```
+For some images you may need to install curl and libfreetype6 as these are not preinstalled in some OS versions. For example on Ubuntu using Docker, you can run following commands:
 
-If you don't want to have to recreate the virtual machine every time you
-can use `BEAKER_destroy=no` and `BEAKER_provision=no`. On the first run you will
-at least need `BEAKER_provision` set to yes (the default). The Vagrantfile
-for the created virtual machines will be in `.vagrant/beaker_vagrant_files`.
+    ```shell
+    docker exec <container_id> apt-get install curl wget
+    docker exec <container_id> apt-get install -y libfreetype6
+    ```
+`container_id` can be obtained by running the command `docker ps`.

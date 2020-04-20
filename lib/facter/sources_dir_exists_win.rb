@@ -3,12 +3,12 @@ Facter.add(:sources_dir_exists_win) do
   setcode do
     if File.directory? 'C:\\sumo'
       if (!Dir.glob('C:\\sumo\\*.json').empty?)
-        result = true
+        true
       else
-        result = false
+        false
       end
     else
-      result = false
+      false
     end
   end
 end

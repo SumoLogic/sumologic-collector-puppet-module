@@ -13,7 +13,7 @@ sumo-collector-puppet-module
 To install Sumo Puppet Module follow below steps:
 * Navigate to Puppet global modules directory or specific environment modules directory.
 * Clone the Sumo Puppet module.
-* Rename the module as sumo.    
+* Rename the module as sumo.
 
 
 ## Usage
@@ -23,7 +23,7 @@ Once the Sumo puppet module is installed, you will need to supply the sumo class
 * The accessid.
 * The accesskey.
 
-OR 
+OR
 
 * One-time token for installation.
 
@@ -129,7 +129,7 @@ The only required parameters are a pair of authentication parameters: `accessid`
 | description           | Description for the Collector to appear in Sumo Logic                                                                                                                                                         | undef
 | disable_action_source | To disable the running of script-based Sources                                                                                                                                                                | undef
 | disable_script_source | To disable the running of script-based action Sources                                                                                                                                                         | undef
-| disable_upgrade       | If true, the Collector rejects upgrade requests from Sumo Logic                                                                                                                                               | undef                                                        
+| disable_upgrade       | If true, the Collector rejects upgrade requests from Sumo Logic                                                                                                                                               | undef
 | ephemeral             | Whether to mark the collector as ephemeral                                                                                                                                                                    | false
 | hostname              | The host name of the machine on which the Collector is running                                                                                                                                                | Hostname
 | local_config_mgmt     | If you want this module to enable local config management                                                                                                                                                     | false

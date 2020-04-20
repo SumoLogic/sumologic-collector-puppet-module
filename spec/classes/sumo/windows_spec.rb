@@ -18,7 +18,6 @@ describe 'sumo' do
     it { is_expected.to contain_exec('download_sumo') }
     it { is_expected.to contain_package('sumo-collector') }
     it { is_expected.to contain_service('sumo-collector') }
-
   end
 
   context 'with sources_override true ' do
@@ -45,7 +44,6 @@ describe 'sumo' do
     it { is_expected.to contain_exec('download_sumo') }
     it { is_expected.to contain_package('sumo-collector') }
     it { is_expected.to contain_service('sumo-collector') }
-
   end
 
   context 'with sync_sources_override true and local_config_mgmt true' do
@@ -89,5 +87,18 @@ describe 'sumo' do
 
     it { is_expected.to contain_file('C:\\\\sumo\\\\syncsources.json') }
     it { is_expected.to contain_service('sumo-collector') }
+  end
+
+  context 'with sources_override false and skip registration true' do
+    let(:params) { { accessid: 'accessid', accesskey: 'accesskey', sources_override: false, skip_registration: 'true' } }
+
+    it { is_expected.to contain_class('sumo::win_config') }
+    it { is_expected.to contain_class('sumo::win_install') }
+    it { is_expected.to contain_file('C:\sumo') }
+    it { is_expected.to contain_file('C:\sumo\download_sumo.ps1') }
+    it { is_expected.to contain_file('C:\sumo\sumoVarFile.txt') }
+    it { is_expected.to contain_exec('download_sumo') }
+    it { is_expected.to contain_package('sumo-collector') }
+    it { is_expected.not_to contain_service('sumo-collector') }
   end
 end

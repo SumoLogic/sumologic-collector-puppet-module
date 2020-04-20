@@ -45,11 +45,11 @@ class sumo (
   if ($accessid and $accesskey) or ($token) {
     if ($accessid)
     {
-      validate_string($accessid)
-      validate_string($accesskey)
+      validate_legacy(String, 'validate_string', $accessid)
+      validate_legacy(String, 'validate_string', $accesskey)
     }
     else {
-      validate_string($token)
+      validate_legacy(String, 'validate_string', $token)
     }
   }
   else {
@@ -58,25 +58,25 @@ class sumo (
 
 
 
-  if $category { validate_string($category)}
-  if $collector_name { validate_string($collector_name) }
-  if $collector_secure_files { validate_string($collector_secure_files) }
-  if $collector_url { validate_string($collector_url) }
-  if $description { validate_string($description) }
-  if $disable_script_source { validate_string($disable_script_source) }
-  if $disable_action_source { validate_string($disable_action_source) }
-  if $disable_upgrade { validate_string($disable_upgrade) }
-  if $hostname { validate_string($hostname)}
-  if $proxy_host { validate_string($proxy_host) }
-  if $proxy_ntlmdomain { validate_string($proxy_ntlmdomain) }
-  if $proxy_user { validate_string($proxy_user) }
-  if $proxy_password { validate_string($proxy_password) }
-  if $proxy_port { validate_string($proxy_port) }
-  if $runas_username { validate_string($runas_username) }
-  if $skip_registration { validate_string($skip_registration) }
-  if $target_cpu { validate_integer($target_cpu)}
-  if $time_zone { validate_string($time_zone)}
-  if $win_run_as_password { validate_string($win_run_as_password)}
+  if $category { validate_legacy(String, 'validate_string', $category)}
+  if $collector_name { validate_legacy(String, 'validate_string', $collector_name) }
+  if $collector_secure_files { validate_legacy(String, 'validate_string', $collector_secure_files) }
+  if $collector_url { validate_legacy(String, 'validate_string', $collector_url) }
+  if $description { validate_legacy(String, 'validate_string', $description) }
+  if $disable_script_source { validate_legacy(String, 'validate_string', $disable_script_source) }
+  if $disable_action_source { validate_legacy(String, 'validate_string', $disable_action_source) }
+  if $disable_upgrade { validate_legacy(String, 'validate_string', $disable_upgrade) }
+  if $hostname { validate_legacy(String, 'validate_string', $hostname)}
+  if $proxy_host { validate_legacy(String, 'validate_string', $proxy_host) }
+  if $proxy_ntlmdomain { validate_legacy(String, 'validate_string', $proxy_ntlmdomain) }
+  if $proxy_user { validate_legacy(String, 'validate_string', $proxy_user) }
+  if $proxy_password { validate_legacy(String, 'validate_string', $proxy_password) }
+  if $proxy_port { validate_legacy(String, 'validate_string', $proxy_port) }
+  if $runas_username { validate_legacy(String, 'validate_string', $runas_username) }
+  if $skip_registration { validate_legacy(String, 'validate_string', $skip_registration) }
+  if $target_cpu { validate_legacy(Integer, 'validate_integer', $target_cpu)}
+  if $time_zone { validate_legacy(String, 'validate_string', $time_zone)}
+  if $win_run_as_password { validate_legacy(String, 'validate_string', $win_run_as_password)}
 
   if ($manage_sources or $sources_override) {
     $sources_file_override = true
