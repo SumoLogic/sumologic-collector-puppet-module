@@ -107,10 +107,12 @@ class sumo::win_install(
     }
 
     ####### Make sure that the collector service is running ###########
-
-    service { 'sumo-collector':
-      ensure => 'running',
-      enable => true,
-    }
+    if !str2bool($skip_registration)
+      {
+        service { 'sumo-collector':
+          ensure => 'running',
+          enable => true,
+        }
+      }
 
   }

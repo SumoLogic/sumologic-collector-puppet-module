@@ -84,9 +84,6 @@ targetCPU=<%= $target_cpu %>
 <% if $time_zone { -%>
 timeZone=<%= $time_zone %>
 <% } -%>
-<% if $win_run_as_password { -%>
-winRunAs.password=<%= $win_run_as_password %>
-<% } -%>
 <% if $wrapper_java_command { -%>
 wrapper.java.command=<%= $wrapper_java_command %>
 <% } -%>
