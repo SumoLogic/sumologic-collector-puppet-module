@@ -22,19 +22,6 @@ stages:
   -
     if: tag =~ ^v\d
     name: deploy
-matrix:
-  fast_finish: true
-  include:
-    -
-      rvm: 2.5.1
-      stage: spec
-    -
-      rvm: 2.5.3
-      stage: spec
-    -
-      rvm: 2.5.7
-      stage: spec
-
 script:
   - 'bundle exec rake test'
 #      env: DEPLOY_TO_FORGE=yes
