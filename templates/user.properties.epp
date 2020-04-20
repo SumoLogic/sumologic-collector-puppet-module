@@ -84,3 +84,6 @@ targetCPU=<%= $target_cpu %>
 <% if $time_zone { -%>
 timeZone=<%= $time_zone %>
 <% } -%>
+<% if $wrapper_java_command { -%>
+wrapper.java.command=<%= $wrapper_java_command %>
+<% } -%>

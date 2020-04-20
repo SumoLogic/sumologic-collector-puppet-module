@@ -35,7 +35,7 @@ class sumo::nix_config (
   $time_zone                     = $sumo::time_zone,
   $token                         = $sumo::token,
   $use_package                   = $sumo::use_package,
-
+  $use_tar_pkg                   = $sumo::use_tar_pkg,
 ) {
 
   ############# Make sure base sumo class is defined #########
@@ -117,9 +117,9 @@ class sumo::nix_config (
   if !str2bool($::service_file_exists)
   {
 
-    if $use_package  {
+    if ($use_package or $use_tar_pkg)  {
 
-      if $sumo_package_provider == ''
+      if ($use_package and $sumo_package_provider == '')
       {
         fail("Package installation not supported on this architecture: ${::architecture}")
       }
