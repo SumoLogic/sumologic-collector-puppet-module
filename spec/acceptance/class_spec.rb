@@ -4,8 +4,8 @@ describe 'sumo class: management of sources', if: ['debian', 'redhat', 'ubuntu']
   it 'is_expected.to work idempotently with no errors' do
     pp = <<-EOS
     class { 'sumo':
-      accessid           => 'suCW0WAK2s5GfA',
-      accesskey          => 'fDOb9rlJfIEZ8XFAaiVSxrduY4L7f3KjUPataD66jatVvJaGDcL7rwxSU6mf6Rp8',
+      accessid           => 'Type your Sumo Logic Access Id here',
+      accesskey          => 'Type your Sumo Logic Access Key here',
       manage_sources     => true,
     }
     EOS
