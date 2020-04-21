@@ -3,12 +3,12 @@ Facter.add(:sources_dir_exists) do
   setcode do
     if File.directory? '/usr/local/sumo'
       if !(Dir.glob('/usr/local/sumo/*.json').empty?)
-        result = true
+        true
       else
-        result = false
+        false
       end
     else
-      result = false
+      false
     end
   end
 end
