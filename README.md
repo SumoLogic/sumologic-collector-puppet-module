@@ -8,7 +8,7 @@ sumo-collector-puppet-module
 * Currently, the module only supports the installation of latest collector version.
 * Upgrade of the collector is not supported currently.
 
-#### Note: 
+#### Note:
 For Puppet 4.x and later:
 
 * Utilize the release v0.2.1 or later. Release v0.2.1 and subsequent v0.2.x releases will be enhanced per puppet guidelines to support latest puppet versions.
@@ -21,10 +21,14 @@ For Puppet 3.x:
 
 ## Setup
 
-To install Sumo Puppet Module follow below steps:
+To begin using this module, use the Puppet Module Tool (PMT) from the command line to install this module:
+
+puppet module install sumologic-sumo
+
+To install Sumo Puppet Module form GitHub, follow below steps:
 * Navigate to Puppet global modules directory or specific environment modules directory.
 * Clone the Sumo Puppet module.
-* Rename the module as sumo.    
+* Rename the module as sumo.
 
 
 ## Usage
@@ -34,7 +38,7 @@ Once the Sumo puppet module is installed, you will need to supply the sumo class
 * The accessid.
 * The accesskey.
 
-OR 
+OR
 
 * One-time token for installation.
 
