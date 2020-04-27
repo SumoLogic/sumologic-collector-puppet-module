@@ -1,6 +1,6 @@
 {
   "name": "sumologic-sumo",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "SumoLogic",
   "summary": "Provides SumoLogic collector installation and configuration",
   "license": "Apache-2.0",
