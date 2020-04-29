@@ -25,7 +25,7 @@ To begin using this module, use the Puppet Module Tool (PMT) from the command li
 
 puppet module install sumologic-sumo
 
-To install Sumo Puppet Module form GitHub, follow below steps:
+To install Sumo Puppet Module from GitHub, follow below steps:
 * Navigate to Puppet global modules directory or specific environment modules directory.
 * Clone the Sumo Puppet module.
 * Rename the module as sumo.
