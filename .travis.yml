@@ -19,16 +19,15 @@ rvm:
   - 2.5.7
 stages:
   - spec
-  -
-    if: tag =~ ^v\d
+  - if: tag =~ ^v\d
     name: deploy
 script:
-  - 'bundle exec rake test'
+  - "bundle exec rake test"
 #      env: DEPLOY_TO_FORGE=yes
 #      stage: deploy
 branches:
   only:
     - master
-    - /^v\d/
+    - /.*/
 notifications:
   email: false
