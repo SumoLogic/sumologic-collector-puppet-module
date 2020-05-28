@@ -43,7 +43,7 @@ ephemeral=true
 <% } else {-%>
 ephemeral=false
 <% } -%>
-<% if $fipsJce { -%>
+<% if $fipsjce { -%>
 fipsJce=true
 <% } else {-%>
 <% } -%>
