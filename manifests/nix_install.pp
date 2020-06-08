@@ -173,6 +173,14 @@ class sumo::nix_install(
           require  => Exec['Download SumoCollector Package'],
         }
 
+        ########## Run configureFipsMode.sh  ############
+        if $fipsjce {
+          exec {'/opt/SumoCollector/script/configureFipsMode.sh':
+            path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
+            onlyif => 'cat /proc/sys/crypto/fips_enabled',
+          }
+        }
+
       } # Use Package
 
       elsif $use_tar_pkg {
