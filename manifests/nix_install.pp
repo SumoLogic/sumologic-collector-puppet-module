@@ -13,6 +13,7 @@ class sumo::nix_install(
   $disable_script_source   = $sumo::disable_script_source,
   $disable_upgrade         = $sumo::disable_upgrade,
   $ephemeral               = $sumo::ephemeral,
+  $fipsjce                 = $sumo::fipsjce,
   $hostname                = $sumo::hostname,
   $sources_file_override   = $sumo::sources_file_override,
   $sync_sources_override   = $sumo::sync_sources_override,
@@ -94,6 +95,7 @@ class sumo::nix_install(
                 'disable_script_source'   => $disable_script_source,
                 'disable_upgrade'         => $disable_upgrade,
                 'ephemeral'               => $ephemeral,
+                'fipsjce'                 => $fipsjce,
                 'hostName'                => $hostname,
                 'skip_access_key_removal' => $skip_access_key_removal,
                 'sources_file_override'   => $sources_file_override,
@@ -136,6 +138,7 @@ class sumo::nix_install(
               'disable_script_source'   => $disable_script_source,
               'disable_upgrade'         => $disable_upgrade,
               'ephemeral'               => $ephemeral,
+              'fipsjce'                 => $fipsjce,
               'hostName'                => $hostname,
               'skip_access_key_removal' => $skip_access_key_removal,
               'sources_file_override'   => $sources_file_override,
@@ -168,6 +171,14 @@ class sumo::nix_install(
           provider => $sumo_package_provider,
           source   => "/usr/local/sumo/${sumo_package_filename}",
           require  => Exec['Download SumoCollector Package'],
+        }
+
+        ########## Run configureFipsMode.sh  ############
+        if $fipsjce {
+          exec {'/bin/bash /opt/SumoCollector/script/configureFipsMode.sh -j /opt/SumoCollector/jre/':
+            path   => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/sbin'],
+            onlyif => 'cat /proc/sys/crypto/fips_enabled',
+          }
         }
 
       } # Use Package
@@ -257,6 +268,7 @@ class sumo::nix_install(
                     'disable_script_source'   => $disable_script_source,
                     'disable_upgrade'         => $disable_upgrade,
                     'ephemeral'               => $ephemeral,
+                    'fipsjce'                 => $fipsjce,
                     'hostName'                => $hostname,
                     'skip_access_key_removal' => $skip_access_key_removal,
                     'sources_file_override'   => $sources_file_override,
@@ -300,6 +312,7 @@ class sumo::nix_install(
                     'disable_script_source'   => $disable_script_source,
                     'disable_upgrade'         => $disable_upgrade,
                     'ephemeral'               => $ephemeral,
+                    'fipsjce'                 => $fipsjce,
                     'hostName'                => $hostname,
                     'skip_access_key_removal' => $skip_access_key_removal,
                     'sources_file_override'   => $sources_file_override,

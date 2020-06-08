@@ -13,6 +13,7 @@ class sumo (
   $disable_script_source           = undef,
   $disable_upgrade                 = undef,
   Boolean $ephemeral               = false,
+  Boolean $fipsjce                 = false,
   $hostname                        = $::hostname,
   Boolean $local_config_mgmt       = false,
   Boolean $manage_sources          = false,

@@ -43,6 +43,10 @@ ephemeral=true
 <% } else {-%>
 ephemeral=false
 <% } -%>
+<% if $fipsjce { -%>
+fipsJce=true
+<% } else {-%>
+<% } -%>
 <% if $hostname { -%>
 hostName=<%= $hostname %>
 <% } -%>
