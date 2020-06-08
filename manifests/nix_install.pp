@@ -175,8 +175,8 @@ class sumo::nix_install(
 
         ########## Run configureFipsMode.sh  ############
         if $fipsjce {
-          exec {'/opt/SumoCollector/script/configureFipsMode.sh':
-            path   => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
+          exec {'/bin/bash /opt/SumoCollector/script/configureFipsMode.sh -j /opt/SumoCollector/jre/':
+            path   => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/sbin'],
             onlyif => 'cat /proc/sys/crypto/fips_enabled',
           }
         }
