@@ -110,7 +110,7 @@ GEM
     httpclient (2.8.3)
     jgrep (1.5.2)
     jmespath (1.4.0)
-    json (2.1.0)
+    json (2.3.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
     jwt (2.2.1)
@@ -178,7 +178,7 @@ GEM
     puppet-blacksmith (5.1.0)
       rest-client (~> 2.0)
     puppet-lint (2.4.2)
-    puppet-module-posix-default-r2.5 (0.4.4)
+    puppet-module-posix-default-r2.6 (0.5.0)
     puppet-module-posix-dev-r2.5 (0.3.14)
       codecov (~> 0.1.10)
       gettext-setup (~> 0.26)
@@ -360,12 +360,12 @@ PLATFORMS
 
 DEPENDENCIES
   fast_gettext
-  json (= 2.1.0)
+  json (= 2.3.0)
   puppet
-  puppet-module-posix-default-r2.5 (~> 0.4)
+  puppet-module-posix-default-r2.6 (~> 0.4)
   puppet-module-posix-dev-r2.5 (= 0.3.14)
-  puppet-module-win-default-r2.5 (~> 0.4)
-  puppet-module-win-dev-r2.5 (~> 0.4)
+  puppet-module-win-default-r2.6 (~> 0.4)
+  puppet-module-win-dev-r2.6 (~> 0.4)
   puppet_litmus
   rb-readline (= 0.5.5)
   serverspec
